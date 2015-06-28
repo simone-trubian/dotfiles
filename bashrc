@@ -72,9 +72,14 @@ esac
 # add vi editing mode to the command line
 set -o vi
 
-# Alias definitions.
+# Source alias definitions.
 if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
+fi
+
+# Source function definitions.
+if [ -f ~/.bash_fun ]; then
+    source ~/.bash_fun
 fi
 
 # colored GCC warnings and errors
@@ -85,9 +90,9 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
+    source /usr/share/bash-completion/bash_completion
   elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+    source /etc/bash_completion
   fi
 fi
 
