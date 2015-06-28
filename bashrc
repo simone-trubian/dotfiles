@@ -78,8 +78,13 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 # Source function definitions.
-if [ -f ~/.bash_fun ]; then
-    source ~/.bash_fun
+if [ -f ~/conf/bash_fun ]; then
+    source ~/conf/bash_fun
+fi
+
+# Source list colours
+if [ -f ~/conf/ls_colors ]; then
+    source ~/conf/ls_colors
 fi
 
 # colored GCC warnings and errors
