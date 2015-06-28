@@ -2,22 +2,14 @@
 #         BASH COMMANDS
 # -------------------------------------------------------------------------- #
 
-alias ll='ls -alF'
-alias la='ls -Aa'
-alias l='ls -CFa'
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias l='ls -CF --color=auto'
+    alias ll='ls -alF --color=auto'
+    alias la='ls -Aa --color=auto'
 
-# -------------------------------------------------------------------------- #
-#         MISC
-# -------------------------------------------------------------------------- #
-
-alias tmux="tmux -2"
-
-alias pycharm='/home/simone/pycharm-4.0.4/bin/pycharm.sh'
-alias green='source /home/simone/green/env/bin/activate && cd /home/simone/green/'
-alias devser='python /home/simone/green/green.py --port=7777'
-alias vold='ssh -i /home/simone/.ssh/development-ireland.pem ubuntu@54.170.60.231'
-alias blue='ssh -i /home/simone/.ssh/development-ireland.pem ubuntu@blue.canopycontrol.co.uk'
-alias casser='ssh -i /home/simone/.ssh/development-ireland.pem ubuntu@54.216.168.244'
-
-alias sparsta='ssh -i /home/simone/.ssh/development-ireland.pem ubuntu@54.74.123.55'
-alias c='clear'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
