@@ -73,8 +73,8 @@ esac
 set -o vi
 
 # Source alias definitions.
-if [ -f ~/.bash_aliases ]; then
-    source ~/.bash_aliases
+if [ -f ~/conf/bash_aliases ]; then
+    source ~/conf/bash_aliases
 fi
 
 # Source function definitions.
@@ -101,9 +101,14 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Source work PC configuration.
+if [ -f ~/.bash_work ]; then
+  source ~/.bash_work
+fi
+
 # Source home PC configuration.
-if [ -f /home/simone/conf/bash_home ]; then
-  source /home/simone/conf/bash_home
+if [ -f ~/.bash_home ]; then
+  source ~/.bash_home
 fi
 
 # Virtualenv
