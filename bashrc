@@ -38,6 +38,9 @@ fi
 # Set a sensible Color strategy for tmux.
 export TERM="screen-256color"
 
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
@@ -72,6 +75,9 @@ esac
 # add vi editing mode to the command line
 set -o vi
 
+# ENVIRONMENT VARIABLES
+export EDITOR='vim'
+
 # Source alias definitions.
 if [ -f ~/conf/bash_aliases ]; then
     source ~/conf/bash_aliases
@@ -86,9 +92,6 @@ fi
 if [ -f ~/conf/ls_colors ]; then
     source ~/conf/ls_colors
 fi
-
-# colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
