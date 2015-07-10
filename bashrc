@@ -62,6 +62,7 @@ fi
 branch() {
     git rev-parse --symbolic-full-name --abbrev-ref HEAD 2>/dev/null
 }
+alias branch=branch
 
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[00;32m\]\u@\h\[\033[00m\]:\[\033[00;34m\]\w\[\033[00m\]\$ '
@@ -81,7 +82,7 @@ esac
 # add vi editing mode to the command line
 set -o vi
 
-PROMPT_COMMAND=$(branch)
+#PROMPT_COMMAND=$(branch)
 
 # ENVIRONMENT VARIABLES
 export EDITOR='vim'
