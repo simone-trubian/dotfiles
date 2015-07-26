@@ -225,3 +225,7 @@ vmap <C-c> "+y
 vmap <C-x> "+c
 vmap <C-v> c<ESC>"+p
 imap <C-v> <ESC>"+pa
+
+" Paste timestamp.
+imap <C-t> <ESC>:r!date<CR>kJA
+
