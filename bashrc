@@ -81,7 +81,7 @@ esac
 # add vi editing mode to the command line
 set -o vi
 
-PROMPT_COMMAND=$(branch)
+#PROMPT_COMMAND=$(branch)
 
 # ENVIRONMENT VARIABLES
 export EDITOR='vim'

@@ -225,3 +225,6 @@ vmap <C-c> "+y
 vmap <C-x> "+c
 vmap <C-v> c<ESC>"+p
 imap <C-v> <ESC>"+pa
+
+" Remove evil mixed indents, trailing blankspaces or tabs.
+nmap <C-t> :g/^\s\+$/d<CR>
