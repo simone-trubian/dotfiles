@@ -228,3 +228,6 @@ imap <C-v> <ESC>"+pa
 
 " Remove evil mixed indents, trailing blankspaces or tabs.
 nmap <C-t> :g/^\s\+$/d<CR>
+
+" Paste timestamp.
+imap <C-t> <ESC>:r!date<CR>kJA
