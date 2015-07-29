@@ -223,7 +223,7 @@ nmap <Up> <C-W>k
 " Paste content in-to the system.
 vmap <C-c> "+y
 vmap <C-x> "+c
-vmap <C-v> c<ESC>"+p
+vmap <C-v> <ESC>"+P
 imap <C-v> <ESC>"+pa
 
 " Remove evil mixed indents, trailing blankspaces or tabs.
