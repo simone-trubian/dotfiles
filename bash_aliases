@@ -13,3 +13,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
+
+alias paunt='sudo netstat -paunt' # Show all processes bound to TCP ports.
+alias allusers='cut -d: -f1 /ect/passwd' # Show all users in the system.
+
