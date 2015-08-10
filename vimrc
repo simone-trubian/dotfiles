@@ -220,6 +220,10 @@ nmap <Right> :bn<CR>
 nmap <Down> <C-W>j
 nmap <Up> <C-W>k
 
+" Move through horizontal splits.
+nmap <C-l> <C-W>l
+nmap <C-h> <C-W>h
+
 " Paste content in-to the system.
 vmap <C-c> "+y
 vmap <C-x> "+c
