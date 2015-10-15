@@ -217,12 +217,12 @@ nmap <Left> :bp<CR>
 nmap <Right> :bn<CR>
 
 " Move through vertical splits using arrows.
-nmap <Down> <C-W>j
-nmap <Up> <C-W>k
 
-" Move through horizontal splits.
+" Move through splits.
 nmap <C-l> <C-W>l
 nmap <C-h> <C-W>h
+nmap <C-j> <C-W>j
+nmap <C-k> <C-W>k
 
 " Paste content in-to the system.
 vmap <C-c> "+y
