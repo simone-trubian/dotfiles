@@ -1,2 +1,0 @@
-STARTUP=x-window-manager
-xmodmap ~/.xmodmaprc
