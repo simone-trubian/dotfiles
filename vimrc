@@ -101,15 +101,15 @@ set splitright          " Open the new window to the right of the current.
 set noerrorbells        " Silence the error bell.
 set novisualbell        " Don't flash the screen when ar error occurs.
 set t_vb=
-set tm=500
 
-" Writing automatically open buffers when closing.
-set autowrite           " Write automatically when closing a buffer.
-set nohidden            " Don't hide buffers when closing.
+" Manage buffer writing.
+set noautowrite         " Don't write automatically when moving from a buffer.
+set hidden
+set bufhidden=hide      " Invisible buffers will be hid.
 
 " Set wild menu parameters.
 set wildmenu            " Set WiLd command mode.
-set wildmode=list:longest,full	" Set wild autocompletion params.
+set wildmode=list:longest,full  " Set wild autocompletion params.
 set wildignore=*.o,*~,*.pyc,*.swp
 
 " Set number column.
@@ -120,7 +120,7 @@ set cpoptions+=n        " Use number colum for the text of wrapped lines.
 
 " Always highlight column 80 so it's easier to see where
 " cutoff appears on longer screens
-autocmd BufWinEnter * highlight ColorColumn ctermbg=darkred
+autocmd BufWinEnter * highlight ColorColumn ctermbg=blue
 set colorcolumn=80
 
 " Display special Characters and helpers
@@ -206,6 +206,10 @@ endif
 " ------------------------------------------------------------------------- #
 "           MAPPINGS
 " ------------------------------------------------------------------------- #
+
+" Sync the unnamed register with the clipboard.
+set clipboard^=unnamedplus
+
 " Disable arrow keys.
 noremap   <Up>     <NOP>
 noremap   <Down>   <NOP>

@@ -6,5 +6,6 @@ set t_Co=256
 colorscheme solarized " Add personal color scheme.
 
 set guifont=Dejavu\ Sans\ Mono\ for\ Powerline\ Book\ 9
+set tm=500
 set spell spelllang=en_gb
 win 85 68
