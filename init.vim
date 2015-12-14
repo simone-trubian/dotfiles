@@ -74,17 +74,11 @@ nmap <C-h> <C-W>h
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
 
-" Paste content in-to the system.
-vmap <C-c> "+y
-vmap <C-x> "+c
-vmap <C-v> <ESC>"+P
-imap <C-v> <ESC>"+pa
-
 " Remove buffer without removing the split.
 nmap <C-c> :bp\|bd #<CR>
 
-" Remove evil mixed indents, trailing blankspaces or tabs.
-nmap <C-t> :g/^\s\+$/d<CR>
+" Toggle highligted searches.
+nnoremap <C-t> :if (&hlsearch == 1) \| set nohlsearch \| else \| set hlsearch \| endif <cr>
 
 " Paste timestamp.
 imap <C-t> <ESC>:r!date<CR>kJA
