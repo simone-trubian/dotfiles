@@ -206,7 +206,8 @@ endif
 " ------------------------------------------------------------------------- #
 "           MAPPINGS
 " ------------------------------------------------------------------------- #
-
+"nnoremap <c-c> :if (&hlsearch == 1) \| set nohlsearch \| else \| set hlsearch \| endif <cr>
+"set noesckeys
 " Sync the unnamed register with the clipboard.
 set clipboard^=unnamedplus
 
