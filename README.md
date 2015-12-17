@@ -10,4 +10,5 @@ ln -s gitignore_global $HOME/.gitignore_global
 ln -s gvimrc $HOME/.gvimrc
 ln -s init.vim $XDG_CONFIG_HOME/nvim/init.vim
 ln -s tmux.conf $HOME/.tmux.conf
-ln -s vimrc $HOME/.vimrc```
+ln -s vimrc $HOME/.vimrc
+```
