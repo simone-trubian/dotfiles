@@ -59,15 +59,6 @@ let g:airline#extensions#branch#enabled = 1
 " Enable virtualenv integration
 let g:airline#extensions#virtualenv#enabled = 1
 
-" Haskell vim
-let g:haskell_indent_if = 3
-let g:haskell_indent_case = 2
-let g:haskell_indent_let = 4
-let g:haskell_indent_where = 6
-let g:haskell_indent_do = 4
-let g:haskell_indent_in = 1
-let g:cabal_indent_section = 2
-
 
 " ------------------------------------------------------------------------- #
 "           GENERAL
@@ -207,13 +198,15 @@ endif
 "           MAPPINGS
 " ------------------------------------------------------------------------- #
 " Sync the unnamed register with the clipboard.
-set clipboard^=unnamedplus
+set clipboard=unnamed
 
 " Disable arrow keys.
 noremap   <Up>     <NOP>
 noremap   <Down>   <NOP>
 noremap   <Left>   <NOP>
 noremap   <Right>  <NOP>
+noremap   <C-m>  <NOP>
+
 
 " Move through buffers using arrows.
 nmap <Left> :bp<CR>
@@ -227,6 +220,9 @@ nmap <C-k> <C-W>k
 
 " Remove buffer without removing the split.
 nmap <C-c> :bp\|bd #<CR>
+
+" Toggle highligted vertical cutoff.
+nnoremap <C-m> :if (&colorcolumn == 80) \| set colorcolumn=0 \| else \| set colorcolumn=80 \| endif <CR>
 
 " Toggle highligted searches.
 nnoremap <C-t> :if (&hlsearch == 1) \| set nohlsearch \| else \| set hlsearch \| endif <cr>
