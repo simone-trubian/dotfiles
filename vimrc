@@ -235,8 +235,10 @@ nmap <C-k> <C-W>k
 nmap <C-c> :bp\|bd #<CR>
 
 " Toggle highligted vertical cutoff.
-nnoremap <C-m> :if (&colorcolumn == 80) \| set colorcolumn=0 \| else \| set colorcolumn=80 \| endif <CR>
+nnoremap <C-m> :if (&colorcolumn == 80) \| set colorcolumn=0 \| else \| set colorcolumn=80 \| endif<cr>
 
+" Toggle nerd tree.
+nnoremap <C-n> :NERDTreeToggle<cr>
 " Toggle highligted searches.
 nnoremap <C-t> :if (&hlsearch == 1) \| set nohlsearch \| else \| set hlsearch \| endif <cr>
 
