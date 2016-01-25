@@ -187,24 +187,6 @@ if !exists(":DiffOrig")
 endif
 
 " ------------------------------------------------------------------------- #
-"           INDENTING
-" ------------------------------------------------------------------------- #
-
-au BufNewFile,BufRead *.py " Python
-    \ :set tabstop=4
-    \ :set softtabstop=4
-    \ :set shiftwidth=4
-    \ :set textwidth=79
-    \ :set expandtab
-    \ :set autoindent
-    \ :set fileformat=unix
-
-au BufNewFile,BufRead *.js, *.html, *.css " Front-end
-    \ :set tabstop=2
-    \ :set softtabstop=2
-    \ :set shiftwidth=2
-
-" ------------------------------------------------------------------------- #
 "           MAPPINGS
 " ------------------------------------------------------------------------- #
 " Sync the unnamed register with the clipboard.
