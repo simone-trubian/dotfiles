@@ -1,0 +1,28 @@
+#!/usr/local/bin/luajit
+require 'io'
+
+local commit_msg_filepath = arg[1]
+
+local handler = io.popen('git symbolic-ref --short HEAD')
+local branch_name = handler:read('*a')
+local ticket_code = string.match(branch_name, '([A-Z].+%d)')
+
+-- If the branch name is not following the convention use an empty line.
+if ticket_code then
+  ticket_code = '[' .. ticket_code ..']'
+else
+  ticket_code = ''
+end
+
+local file = assert(io.open(commit_msg_filepath, 'r'))
+local content = file:read('*a')
+file:close()
+
+local start = string.sub(content, 1, 1)
+if start == '\n' then
+  content = ticket_code .. content
+end
+
+local file = assert(io.open(commit_msg_filepath, 'w'))
+local content = file:write(content)
+file:close()
