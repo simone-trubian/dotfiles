@@ -1,0 +1,6 @@
+#!/usr/local/bin/luajit
+require 'io'
+
+local handler = io.popen("vagrant ssh -c 'source /home/vagrant/.virtualenvs/novartis-community/bin/activate; make lint -C /home/vagrant/novartis-community'")
+local res = handler:read('*a')
+print(res)
