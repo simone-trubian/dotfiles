@@ -60,6 +60,11 @@ let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#virtualenv#enabled = 1
 
 
+" --------- Flake8 -----------
+let g:PyFlakeOnWrite = 1
+let g:PyFlakeCheckers = 'pep8,mccabe,frosted'
+let g:PyFlakeDefaultComplexity=10
+
 " ------------------------------------------------------------------------- #
 "           GENERAL
 " ------------------------------------------------------------------------- #
