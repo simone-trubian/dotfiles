@@ -64,6 +64,7 @@ let g:airline#extensions#virtualenv#enabled = 1
 let g:PyFlakeOnWrite = 1
 let g:PyFlakeCheckers = 'pep8,mccabe,frosted'
 let g:PyFlakeDefaultComplexity=10
+let g:PyFlakeDisabledMessages = 'E501,E309,E301,E128,E124,F403'
 
 " ------------------------------------------------------------------------- #
 "           GENERAL
