@@ -1,0 +1,17 @@
+#!/usr/local/bin/luajit
+require 'io'
+require 'os'
+
+local command = ""
+
+local handler = io.popen(command)
+local res = handler:read('*a')
+local err = string.match(res, 'Error')
+
+print(res)
+
+if err then
+  os.exit(1)
+else
+  os.exit(0)
+end
