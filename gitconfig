@@ -1,2 +1,17 @@
-[commit]
-  template = ~/.gitmessage
+[user]
+    name = Simone Trubian
+    email = simone.trubian@ondait.com
+    username = simonetrubian
+
+[core]
+    editor = vim
+
+[alias]
+    co = checkout
+    st = status
+    cmt = commit
+    ada = add -A
+    oneline = log --date=relative --pretty=format:\"%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN %C(auto)%d %Creset%s\"
+
+[log]
+    date = local
