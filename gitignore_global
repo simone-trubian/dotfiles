@@ -92,7 +92,7 @@ cabal.sandbox.config
 cabal-dev/
 cabal.config
 dist-sandbox
-dist
+dist/
 /Cabal/dist/
 /Cabal/tests/Setup
 /Cabal/Setup
@@ -120,7 +120,7 @@ tags
 .cache
 .history
 .lib/
-dist/*
+dist/
 target/
 lib_managed/
 src_managed/
