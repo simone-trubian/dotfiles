@@ -121,3 +121,13 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
 fi
 
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
+
+export GOPATH=$HOME/CS/go
+export PATH=$PATH:$HOME/CS/go/bin
+export PATH=$PATH:/usr/lib
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/Users/simone/google-cloud-sdk/path.bash.inc'
+
+# The next line enables shell command completion for gcloud.
+source '/Users/simone/google-cloud-sdk/completion.bash.inc'
