@@ -39,17 +39,11 @@ values."
      (javascript :variables
                  javascript-disable-tern-port-files nil)
 
-     osx
      git
-     spell-checking
+     (spell-checking :variables
+                     spell-checking-enable-by-default nil)
      syntax-checking
      auto-completion
-     ;; better-defaults
-     ;; org
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
-     ;; version-control
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -270,6 +264,10 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
   (global-hl-line-mode)
   (global-linum-mode))
+  (define-key evil-normal-state-map "\C-j" 'evil-window-down)
+  (define-key evil-normal-state-map "\C-k" 'evil-window-up)
+  (define-key evil-normal-state-map "\C-h" 'evil-window-left)
+  (define-key evil-normal-state-map "\C-l" 'evil-window-right)
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
