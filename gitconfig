@@ -8,7 +8,7 @@
     excludesfile = ~/.gitignore_global
 
 [alias]
-    co = checkout
+    cko = checkout
     st = status
     cmt = commit
     ada = add -A
