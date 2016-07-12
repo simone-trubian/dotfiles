@@ -25,19 +25,21 @@ values."
      ;; ----------------------------------------------------------------
      emacs-lisp
      markdown
-     osx
-     git
      haskell
      nixos
-     ;; auto-completion
-     ;; better-defaults
-     ;; org
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
-     ;; spell-checking
-     ;; syntax-checking
-     ;; version-control
+     html
+     yaml
+     (shell :variables
+            shell-default-shell 'term
+            shell-default-position 'bottom
+            shell-default-height 30)
+     (javascript :variables
+                 javascript-disable-tern-port-files nil)
+     git
+     (spell-checking :variables
+                     spell-checking-enable-by-default nil)
+     syntax-checking
+     auto-completion
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -110,7 +112,7 @@ values."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("DejaVu Sans Mono"
-                               :size 11
+                               :size 12
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -243,8 +245,9 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  )
-
+  (setq tramp-ssh-controlmaster-options
+      "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
+)
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
@@ -253,7 +256,12 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
   (global-hl-line-mode)
-  (global-linum-mode))
+  (global-linum-mode)
 
+  (define-key evil-normal-state-map "\C-j" 'evil-window-down)
+  (define-key evil-normal-state-map "\C-k" 'evil-window-up)
+  (define-key evil-normal-state-map "\C-h" 'evil-window-left)
+  (define-key evil-normal-state-map "\C-l" 'evil-window-right)
+)
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
