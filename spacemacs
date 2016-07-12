@@ -32,6 +32,7 @@ values."
      markdown
      html
      yaml
+     elm
      (shell :variables
             shell-default-shell 'term
             shell-default-position 'bottom
@@ -51,7 +52,10 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '()
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages
+   '(
+     smartparens
+     )
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'. (default t)
@@ -215,7 +219,7 @@ values."
    ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
    ;; derivatives. If set to `relative', also turns on relative line numbers.
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers 'relative
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
@@ -262,12 +266,11 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
-  (global-hl-line-mode)
-  (global-linum-mode))
   (define-key evil-normal-state-map "\C-j" 'evil-window-down)
   (define-key evil-normal-state-map "\C-k" 'evil-window-up)
   (define-key evil-normal-state-map "\C-h" 'evil-window-left)
   (define-key evil-normal-state-map "\C-l" 'evil-window-right)
+)
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.

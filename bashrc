@@ -131,3 +131,4 @@ source '/Users/simone/google-cloud-sdk/path.bash.inc'
 
 # The next line enables shell command completion for gcloud.
 source '/Users/simone/google-cloud-sdk/completion.bash.inc'
+if [ -e /Users/simone/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/simone/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
