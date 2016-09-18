@@ -88,18 +88,18 @@ set -o vi
 export EDITOR='vim'
 
 # Source alias definitions.
-if [ -f ~/conf/bash_aliases ]; then
-    source ~/conf/bash_aliases
+if [ -f ~/dotfiles/bash_aliases ]; then
+    source ~/dotfiles/bash_aliases
 fi
 
 # Source function definitions.
-if [ -f ~/conf/bash_fun ]; then
-    source ~/conf/bash_fun
+if [ -f ~/dotfiles/bash_fun ]; then
+    source ~/dotfiles/bash_fun
 fi
 
 # Source list colours
-if [ -f ~/conf/ls_colors ]; then
-    source ~/conf/ls_colors
+if [ -f ~/dotfiles/ls_colors ]; then
+    source ~/dotfiles/ls_colors
 fi
 
 # enable programmable completion features (you don't need to enable
