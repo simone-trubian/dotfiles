@@ -23,16 +23,19 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     emacs-lisp
-     markdown
-     haskell
-     nixos
-     html
-     git
      syntax-checking
      auto-completion
-     yaml
+     (spell-checking :variables
+                     spell-checking-enable-by-default nil)
 
+     markdown
+     git
+     yaml
+     csv
+     html
+
+     emacs-lisp
+     haskell
      (shell :variables
             shell-default-shell 'term
             shell-default-position 'bottom
@@ -40,9 +43,6 @@ values."
 
      (javascript :variables
                  javascript-disable-tern-port-files nil)
-
-     (spell-checking :variables
-                     spell-checking-enable-by-default nil)
 
      )
    ;; List of additional packages that will be installed without being
