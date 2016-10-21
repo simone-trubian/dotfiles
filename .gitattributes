@@ -1,0 +1,3 @@
+#pattern  filter=crypt diff=crypt
+functions/trigdev filter=crypt diff=crypt
+functions/webdev filter=crypt diff=crypt
