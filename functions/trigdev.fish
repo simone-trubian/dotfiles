@@ -1,4 +1,3 @@
-# Phrasee trigger api development server.
-function trigdev
-  ssh -i ~/.ssh/parry-root.pem ubuntu@52.209.144.178
-end
+U2FsdGVkX19/KVlzhtGZwBiJ9o2zlZoYVgHnst1YoYQaA1IWBjk6kZRYo7x2l3td
+uq+2e1BSFWCQiEX6dAku0Eff4gfJ99yWKiXl+fEs+amapfzldzBkXOYphJ7Qhb3n
+8HS7pkUGcQfdlR8vvZZ0u6WkzlvxeVk1MkBwXCyiF2J2tSZ9TchHed9mEdSNtv4s

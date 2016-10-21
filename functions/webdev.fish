@@ -1,4 +1,3 @@
-# Phrasee web application development server.
-function webdev
-  ssh -i ~/.ssh/sandbox-root.pem ec2-user@52.50.143.187
-end
+U2FsdGVkX1/kVPe8cYKIgD26KDhmsRD5DIEOAdfNEABIJvBIIgfkGnbVdspyiLIg
+WbmEBHThZgNkeTJH6NK6jdlwGW8N0s9d1quVE9m96rx4L0mJ+qzwUB3hgjj6odM9
+LY2u3w6D+de9ixC2sJ401+E4KFeDgIv66osyQuclQECHehrR5rljFLZrVsnSERow
