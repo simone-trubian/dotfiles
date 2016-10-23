@@ -34,6 +34,7 @@ values."
      csv
      html
 
+     sql
      shell-scripts
      python
      emacs-lisp
