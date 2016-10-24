@@ -1,3 +1,4 @@
 #pattern  filter=crypt diff=crypt
 functions/trigdev.fish filter=crypt diff=crypt
 functions/webdev.fish filter=crypt diff=crypt
+functions/webprod.fish filter=crypt diff=crypt
