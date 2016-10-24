@@ -34,6 +34,7 @@ values."
      csv
      html
 
+     go
      sql
      shell-scripts
      python
