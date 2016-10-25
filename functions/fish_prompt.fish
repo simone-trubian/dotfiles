@@ -13,7 +13,7 @@ function fish_prompt
    printf ' in '
 
    set_color $fish_color_cwd
-   printf '%s' (prompt_pwd)
+   printf '%s' (pwd)
    set_color normal
 
    # Line 2
