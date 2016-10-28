@@ -34,12 +34,15 @@ values."
      csv
      html
 
-     go
      sql
      shell-scripts
      python
      emacs-lisp
      haskell
+     (go :variables
+         go-use-gometalinter t
+         go-tab-width 4)
+
      (shell :variables
             shell-default-shell 'term
             shell-default-position 'bottom
@@ -57,7 +60,6 @@ values."
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages
    '(
-     exec-path-from-shell
      smartparens
      )
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
