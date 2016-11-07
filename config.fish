@@ -3,11 +3,6 @@ if test -d $HOME/.cabal/bin
   set -x PATH $HOME/.cabal/bin $PATH
 end
 
-# Add Node JS binaries to path
-if test -d /usr/local/node-v6.9.1-linux-x64/
-  set -x PATH /usr/local/node-v6.9.1-linux-x64/bin $PATH
-end
-
 # Add Go binaries to the path
 if test -d /usr/local/go
   set -x PATH /usr/local/go/bin $PATH
