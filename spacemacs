@@ -33,6 +33,7 @@ values."
      yaml
      csv
      html
+     react
 
      sql
      shell-scripts
@@ -49,14 +50,18 @@ values."
             shell-default-height 30)
 
      (javascript :variables
-                 javascript-disable-tern-port-files nil)
+                 javascript-disable-tern-port-files nil
+                 js2-basic-offset 2
+                 js-indent-level 2)
 
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages
+   '(
+     )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages
    '(
