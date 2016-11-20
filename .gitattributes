@@ -2,3 +2,4 @@
 functions/trigdev.fish filter=crypt diff=crypt
 functions/webdev.fish filter=crypt diff=crypt
 functions/webprod.fish filter=crypt diff=crypt
+functions/rest.fish filter=crypt diff=crypt
