@@ -120,19 +120,19 @@ rules:
     - error
     - 1tbs
   camelcase: 2
-  coma-dangle:
-    - error
-    - always-mulitline
+  comma-dangle:
+    - 2
+    - never
   comma-style:
     - error
     - last
   func-call-spacing:
     - error
     - never
-  func-sytle:
-    - error
-    - declaration:
-        allowArrowFunctions: true
+  func-style:
+    - 1
+    - declaration
+    - allowArrowFunctions: true
   id-length:
     - error
     - min: 2
@@ -145,7 +145,9 @@ rules:
     - 3
   max-len:
     - 1
-    - 79
+    - code: 79
+    - comments: 79
+    - tabWidth: 2
   max-lines:
     - 1
     - 1000
