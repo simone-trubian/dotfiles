@@ -40,6 +40,7 @@ values."
      python
      emacs-lisp
      haskell
+     purescript
      (go :variables
          go-use-gometalinter t
          go-tab-width 4)
