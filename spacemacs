@@ -41,6 +41,7 @@ values."
      emacs-lisp
      haskell
      purescript
+     rust
      (go :variables
          go-use-gometalinter t
          go-tab-width 4)
