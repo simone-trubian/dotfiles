@@ -42,7 +42,7 @@ values."
      haskell
      purescript
      (go :variables
-         go-use-gometalinter t
+         go-use-gometalinter nil
          go-tab-width 4)
 
      (shell :variables
@@ -277,6 +277,12 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
   (global-hl-line-mode)
   (global-linum-mode)
+  (setq-default
+   css-indent-offset 2
+   web-mode-markup-indent-offset 2
+   web-mode-css-indent-offset 2
+   web-mode-code-indent-offset 2
+   web-mode-attr-indent-offset 2)
 
   (define-key evil-normal-state-map "\C-j" 'evil-window-down)
   (define-key evil-normal-state-map "\C-k" 'evil-window-up)
