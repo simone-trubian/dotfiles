@@ -34,6 +34,7 @@ values."
      csv
      html
      react
+     docker
 
      sql
      shell-scripts
@@ -43,7 +44,7 @@ values."
      purescript
      rust
      (go :variables
-         go-use-gometalinter t
+         ;; go-use-gometalinter t
          go-tab-width 4)
 
      (shell :variables

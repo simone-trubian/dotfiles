@@ -18,3 +18,5 @@
     date = local
 [push]
 	default = matching
+[credential]
+	helper = cache --timeout=3600
