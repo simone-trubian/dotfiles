@@ -18,14 +18,19 @@ if test -d $HOME/goworkspace
   set -x GOPATH $HOME/goworkspace
 end
 
+# Add Google Cloud GO SDK paths
+if test -d /home/simone/go_appengine/
+  set -x PATH /home/simone/go_appengine/ $PATH
+end
+
+# Add Google Cloud SDK paths
+if test -d /home/simone/google-cloud-sdk/bin/
+  set -x PATH /home/simone/google-cloud-sdk/bin/ $PATH
+end
+
 # Add Node binaries to the path
 if test -d /usr/local/node-v6.9.1-linux-x64/bin
   set -x PATH /usr/local/node-v6.9.1-linux-x64/bin $PATH
-end
-
-# Add Google Cloud SDK binaries to the path
-if test -d /home/simone/dev/google-cloud-sdk/bin
-  set -x PATH /home/simone/dev/google-cloud-sdk/bin $PATH
 end
 
 # Set custom ls colours

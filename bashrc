@@ -128,3 +128,13 @@ export WORKON_HOME=$HOME/.virtualenvs
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
   source /usr/local/bin/virtualenvwrapper.sh
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f /home/simone/google-cloud-sdk/path.bash.inc ]; then
+  source '/home/simone/google-cloud-sdk/path.bash.inc'
+fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f /home/simone/google-cloud-sdk/completion.bash.inc ]; then
+  source '/home/simone/google-cloud-sdk/completion.bash.inc'
+fi
