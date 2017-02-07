@@ -42,6 +42,7 @@ values."
      emacs-lisp
      haskell
      purescript
+     elm
      rust
      (go :variables
          go-use-gometalinter nil
