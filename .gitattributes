@@ -6,4 +6,5 @@ functions/webprod.fish filter=crypt diff=crypt
 functions/backdev.fish filter=crypt diff=crypt
 functions/backprod.fish filter=crypt diff=crypt
 functions/flanclus.fish filter=crypt diff=crypt
+functions/cimast.fish filter=crypt diff=crypt
 functions/rest.fish filter=crypt diff=crypt
