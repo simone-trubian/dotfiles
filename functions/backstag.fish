@@ -1,4 +1,3 @@
-# Phrasee generation backend staging server
-function backstag
-  ssh -i ~/.ssh/parry-root.pem ubuntu@backstag
-end
+U2FsdGVkX1+RQhV7OqoRwH83emJxqrI0BadPHQNo12qdd8sIB1oL4FyTd0CbG2IP
+RQ0Su5SnbkaVceIvkizwH1ExBUW6huj28iYxbLe1Xmmzem4gFhAAmckJjRRTd3N0
+WRzeFteKX8hs1nN0/d/OPvZmo/SWjjfzNdOLle/rgRRHjixAxN+rjZLOIuwheLb2
