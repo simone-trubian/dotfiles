@@ -19,13 +19,25 @@ if test -d $HOME/goworkspace
 end
 
 # Add Google Cloud GO SDK paths
-if test -d /home/simone/go_appengine/
+if test -d $HOME/go_appengine/
   set -x PATH /home/simone/go_appengine/ $PATH
 end
 
 # Add Google Cloud SDK paths
-if test -d /home/simone/google-cloud-sdk/bin/
+if test -d $HOME/google-cloud-sdk/bin/
   set -x PATH /home/simone/google-cloud-sdk/bin/ $PATH
+end
+
+# Add Android SDK paths
+if test -d $HOME/Android/Sdk
+  set -x ANDROID_HOME $HOME/Android/Sdk
+  set -x PATH $ANDROID_HOME/tools $PATH
+  set -x PATH $ANDROID_HOME/platform-tools $PATH
+end
+
+# Add Java 8 binaries to the path
+if test -d /usr/lib/jvm/java-8-oracle
+  set -x JAVA_HOME /usr/lib/jvm/java-8-oracle
 end
 
 # Add Node binaries to the path
