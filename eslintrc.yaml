@@ -141,8 +141,8 @@ rules:
     - min: 1
       max: 25
   indent:
-    - 1
-    - tab
+    - error
+    - 2
   max-depth:
     - error
     - 3

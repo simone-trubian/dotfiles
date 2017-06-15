@@ -25,6 +25,7 @@ values."
      ;; ----------------------------------------------------------------
      syntax-checking
      auto-completion
+     org
      (spell-checking :variables
                      spell-checking-enable-by-default nil)
 
