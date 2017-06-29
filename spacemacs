@@ -44,7 +44,8 @@ values."
      haskell
      purescript
      elm
-     rust
+     (rust :variables
+           rust-format-on-save t)
      (go :variables
          go-use-gometalinter nil
          go-tab-width 4)
