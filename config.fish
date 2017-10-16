@@ -1,3 +1,5 @@
+# Add virtualenv fish wrapper
+eval (python -m virtualfish)
 # Add global Cabal binaries to path
 if test -d $HOME/.cabal/bin
   set -x PATH $HOME/.cabal/bin $PATH
