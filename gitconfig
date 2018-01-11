@@ -1,10 +1,10 @@
 [user]
     name = Simone Trubian
-    email = simone.trubian@ondait.com
-    username = simonetrubian
+    email = simone@phrasee.co
+    username = simone-phrasee
 
 [core]
-    editor = vim
+    editor = nvim
     excludesfile = ~/.gitignore_global
 
 [alias]
