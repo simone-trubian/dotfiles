@@ -34,16 +34,11 @@ values."
      yaml
      csv
      html
-     react
      docker
 
-     sql
      shell-scripts
      python
      emacs-lisp
-     haskell
-     purescript
-     elm
      (rust :variables
            rust-format-on-save t)
      (go :variables
@@ -54,11 +49,6 @@ values."
             shell-default-shell 'term
             shell-default-position 'bottom
             shell-default-height 30)
-
-     (javascript :variables
-                 javascript-disable-tern-port-files nil
-                 js2-basic-offset 2
-                 js-indent-level 2)
 
      )
    ;; List of additional packages that will be installed without being
