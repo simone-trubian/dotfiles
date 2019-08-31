@@ -6,7 +6,7 @@ if test -d /usr/local/go
   set -x PATH /usr/local/go/bin $PATH
 end
 
-# # Add Go workspace binaries to the path
+# Add Go workspace binaries to the path
 if test -d $HOME/goworkspace
   set -x PATH $HOME/goworkspace/bin $PATH
 end
@@ -23,7 +23,7 @@ end
 
 # Add Rust binaries to the path
 if test -d $HOME/.cargo/bin/
-  set -x PATH /home/simone/.cargo/bin/ $PATH
+  set -x PATH $HOME/.cargo/bin/ $PATH
 end
 
 # Add Rust toolchain sources
@@ -34,6 +34,11 @@ end
 # Add Protoc protobuf compiler
 if test -d /usr/local/protoc
     set -x PATH /usr/local/protoc/bin $PATH
+end
+
+# Add Python Poetry to the path
+if test -d $HOME/.poetry/bin/
+  set -x PATH $HOME/.poetry/bin/ $PATH
 end
 
 # Set custom ls colours
