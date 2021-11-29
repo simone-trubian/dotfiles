@@ -7,13 +7,13 @@ if test -d /usr/local/go
 end
 
 # Add Go workspace binaries to the path
-if test -d $HOME/goworkspace
-  set -x PATH $HOME/goworkspace/bin $PATH
+if test -d $HOME/go
+  set -x PATH $HOME/go/bin $PATH
 end
 
 # Add Go workspace to the path
-if test -d $HOME/goworkspace
-  set -x GOPATH $HOME/goworkspace
+if test -d $HOME/go
+  set -x GOPATH $HOME/go
 end
 
 # Add Java 8 binaries to the path
