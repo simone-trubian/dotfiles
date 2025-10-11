@@ -216,5 +216,9 @@
                 "editor.action.commentLine"
             ]
         }
-    ]
+    ],
+    "terminal.integrated.automationProfile.linux": {
+        "path": "/usr/bin/fish"
+    },
+    "terminal.integrated.defaultProfile.linux": "fish"
 }
