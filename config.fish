@@ -1,5 +1,6 @@
-# Add virtualenv fish wrapper
-eval (python -m virtualfish)
+#  
+string match -q "$TERM_PROGRAM" "vscode"
+and . (code --locate-shell-integration-path fish)
 
 # Add Go binaries to the path
 if test -d /usr/local/go
