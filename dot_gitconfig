@@ -1,0 +1,22 @@
+[user]
+    name = Simone Trubian
+    email = simone.trubian@gmail.com
+    username = simone-trubian
+
+[core]
+    editor = vim
+    excludesfile = ~/.gitignore_global
+
+[alias]
+    cko = checkout
+    st = status
+    cmt = commit
+    ada = add -A
+    oneline = log --date=relative --pretty=format:\"%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s\"
+
+[log]
+    date = local
+[push]
+	default = matching
+[credential]
+	helper = cache --timeout=3600
