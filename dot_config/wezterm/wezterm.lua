@@ -68,6 +68,28 @@ config.keys = {
 		mods = "LEADER",
 		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
 	},
+	{
+		-- I like to use vim direction keybindings, but feel free to replace
+		-- with directional arrows instead.
+		key = "j", -- or DownArrow
+		mods = "LEADER",
+		action = wezterm.action.ActivatePaneDirection("Down"),
+	},
+	{
+		key = "k", -- or UpArrow
+		mods = "LEADER",
+		action = wezterm.action.ActivatePaneDirection("Up"),
+	},
+	{
+		key = "h", -- or LeftArrow
+		mods = "LEADER",
+		action = wezterm.action.ActivatePaneDirection("Left"),
+	},
+	{
+		key = "l", -- or RightArrow
+		mods = "LEADER",
+		action = wezterm.action.ActivatePaneDirection("Right"),
+	},
 }
 
 -- Finally, return the configuration to wezterm:
