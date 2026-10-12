@@ -14,7 +14,7 @@ else
 end
 
 config.font = wezterm.font({ family = "Liga SFMono Nerd Font" })
-config.font_size = 13
+config.font_size = 14
 
 config.window_frame = {
 	font = wezterm.font({ family = "Liga SFMono Nerd Font" }),
