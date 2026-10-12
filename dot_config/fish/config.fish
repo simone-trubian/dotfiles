@@ -38,5 +38,8 @@ set -g fish_key_bindings fish_vi_key_bindings
 
 mise activate fish | source
 
+# Set zoxide smarter cd (z, zi)
+zoxide init fish | source
+
 # Set Starship prompt
 starship init fish | source
