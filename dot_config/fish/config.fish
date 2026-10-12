@@ -7,10 +7,13 @@ if test -d $HOME/.config/starship
     set -x STARSHIP_CONFIG $HOME/.config/starship/starship.toml
 end
 
-# Add Antigravity binaries to the path
-if test -d $HOME/.local/bin
-    set -x PATH $HOME/.local/bin
+# Put Homebrew ahead of the macOS system binaries
+if test -x /opt/homebrew/bin/brew
+    /opt/homebrew/bin/brew shellenv fish | source
 end
+
+# Add local binaries (Antigravity, Claude Code) to the path
+fish_add_path --global --path $HOME/.local/bin
 
 # Add Go binaries to the path
 if test -d /usr/local/go
