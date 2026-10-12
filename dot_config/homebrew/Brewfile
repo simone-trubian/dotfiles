@@ -1,0 +1,14 @@
+tap "shaunsingh/sfmono-nerd-font-ligaturized", "https://github.com/shaunsingh/homebrew-SFMono-Nerd-Font-Ligaturized"
+
+brew "chezmoi"
+brew "eza"
+brew "fish"
+brew "mise"
+brew "neovim"
+brew "node"
+brew "starship"
+brew "zoxide"
+
+cask "wezterm"
+cask "font-meslo-lg-nerd-font"
+cask "font-sf-mono-nerd-font-ligaturized"

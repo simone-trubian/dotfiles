@@ -1,0 +1,7 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# Re-runs whenever the Brewfile changes.
+# Brewfile hash: {{ include "dot_config/homebrew/Brewfile" | sha256sum }}
+set -euo pipefail
+brew bundle --file="$HOME/.config/homebrew/Brewfile"
+{{ end -}}
