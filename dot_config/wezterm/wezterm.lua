@@ -1,17 +1,10 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
-local appearance = require("appearance")
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 
--- Follow the macOS light/dark setting. WezTerm reloads the config
--- when the system appearance changes.
-if appearance.is_dark() then
-	config.color_scheme = "Tokyo Night"
-else
-	config.color_scheme = "Tokyo Night Day"
-end
+config.color_scheme = "Tokyo Night"
 
 config.font = wezterm.font({ family = "Liga SFMono Nerd Font" })
 config.font_size = 14
