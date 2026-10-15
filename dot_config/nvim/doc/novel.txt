@@ -1,0 +1,222 @@
+*novel.txt*  Writing a novel: house typography, chapter checks, merge, build
+
+==============================================================================
+CONTENTS                                                      *novel-contents*
+
+  1. Overview ............................................ |novel-overview|
+  2. Files and format .................................... |novel-format|
+  3. Typing .............................................. |novel-typing|
+  4. Commands ............................................ |novel-commands|
+  5. The chapter cycle ................................... |novel-cycle|
+  6. Checks .............................................. |novel-checks|
+  7. Spelling and names .................................. |novel-spelling|
+  8. Building the manuscript ............................. |novel-build|
+  9. Code ................................................ |novel-code|
+
+==============================================================================
+1. Overview                                                   *novel-overview*
+
+The novel module is active in Markdown files inside a novel folder: a folder
+that contains `Manuscript.md` and a `tools/` directory, for example
+`~/Documents/docs/Novels/On the Cusp of the Star/`. Elsewhere it does nothing.
+
+`Manuscript.md` is the master copy of the novel. A chapter is written in
+`Current Chapter.md`, given a final edit in `Previous Chapter.md`, checked
+with |:NovelCheck| and appended to the master with |:NovelMerge|. A submission
+.docx is generated from the master with |:NovelBuild|.
+
+House style (UK manuscript conventions) is recorded in the style sheet:
+single curly quotes for dialogue, double curly quotes inside dialogue, the
+single-character ellipsis, a spaced en dash for asides, a closed em dash for
+interrupted speech, British spelling with -ise endings.
+
+==============================================================================
+2. Files and format                                             *novel-format*
+
+  File                  Holds ~
+  Current Chapter.md    the chapter being written
+  Previous Chapter.md   the last chapter, waiting for its final edit
+  Manuscript.md         every merged chapter (the master)
+  tools/                build files, spell list, README
+
+All three Markdown files use the same format:
+
+  - a chapter starts with a heading of the form `# 32`
+  - one blank line between paragraphs; a paragraph is one line
+  - `* * *` on its own line for a scene break
+  - `*word*` for italics
+  - dialogue in ‘single’ curly quotes, quotes inside dialogue in “double”
+
+`Manuscript.md` starts with a YAML header used for the title page: >
+
+    ---
+    title: On the Cusp of the Star
+    author: Simone Trubian
+    surname: Trubian
+    email: simone.trubian@gmail.com
+    ---
+<
+Optional `address:` and `phone:` lines are added to the contact block.
+
+Trailing spaces are removed when a novel file is saved: in Markdown two
+trailing spaces make a hard line break inside a paragraph.
+
+==============================================================================
+3. Typing                                                       *novel-typing*
+
+In Insert mode, in novel files only, these keys are remapped
+(buffer-local, so they take priority over auto-pairing):
+
+  You type          You get ~
+  '                 ‘ after a space or opening bracket, otherwise ’
+  "                 “ after a space or opening bracket, otherwise ”
+  ...               …
+  space --          space –  (spaced en dash)
+  ---               —  (closed em dash, e.g. ‘They tracked—’)
+
+The ’ after a letter is both the apostrophe and the closing quote. An
+apostrophe at the start of a word (’til, ’em, ’90s) comes out as ‘ when
+typed; fix it by hand or run |:Typeset|, which knows the common cases.
+
+To type a character literally, press CTRL-V first, e.g. CTRL-V ' for a
+straight quote.
+
+==============================================================================
+4. Commands                                                   *novel-commands*
+
+                                                                    *:Typeset*
+:[range]Typeset
+	Convert text to house typography: straight and double quotes to
+	single curly quotes (quotes inside dialogue to double), apostrophes
+	to ’, `...` to …, ` - ` and ` -- ` to ` – `, `---` to —, runs of spaces
+	to one space. Default range is the whole file. Headings and scene
+	breaks are left alone. Use it on pasted or older text: >
+		:'<,'>Typeset
+<	It does not change dialogue tags; |:NovelCheck| lists those.
+
+                                                                 *:NovelCheck*
+:NovelCheck [file]
+	Check a chapter and list the problems in the |quickfix| window; the
+	cursor stays in the text. Without [file] it checks
+	`Previous Chapter.md`. Examples: >
+		:NovelCheck
+		:NovelCheck %
+		:NovelCheck Manuscript.md
+<	For `Previous Chapter.md` the chapter number must be one more than
+	the last chapter in `Manuscript.md`; for `Current Chapter.md`, two
+	more. For `Manuscript.md` the chapter numbers must run in order.
+	Jump through the list with |:cnext| and |:cprev| (or ]q and [q).
+	See |novel-checks| for what is checked.
+
+                                                                 *:NovelMerge*
+:NovelMerge
+	Merge `Previous Chapter.md` into `Manuscript.md`:
+	1. stops if any novel file has unsaved changes;
+	2. runs |:NovelCheck| on `Previous Chapter.md` and stops if there are
+	   errors;
+	3. if there are warnings, lists them and asks whether to merge;
+	4. appends the chapter to the end of `Manuscript.md`;
+	5. moves the text of `Current Chapter.md` into `Previous Chapter.md`;
+	6. starts a new `Current Chapter.md` with the next heading;
+	7. commits the three files to git as "Merge chapter N".
+	Chapters already in `Manuscript.md` are never rewritten, so edits
+	you have saved there are kept. Uncommitted edits to `Manuscript.md`
+	go into the same commit; commit them first if you want them
+	recorded separately.
+
+                                                                 *:NovelBuild*
+:NovelBuild
+	Build the submission manuscript with pandoc, in the background:
+	`build/<title>.docx`. See |novel-build|.
+
+==============================================================================
+5. The chapter cycle                                             *novel-cycle*
+
+  1. Write the new chapter in `Current Chapter.md`.
+  2. Give `Previous Chapter.md` its final edit.
+  3. |:NovelCheck| and fix what it lists.
+  4. |:NovelMerge|.
+  5. |:NovelBuild| when a .docx is needed.
+
+To revise an earlier chapter, edit `Manuscript.md` directly and run
+`:NovelCheck Manuscript.md` afterwards.
+
+==============================================================================
+6. Checks                                                       *novel-checks*
+
+Errors (E) block |:NovelMerge|:
+
+  - heading not of the form `# 32`, wrong chapter number, more than one
+    chapter in a chapter file, chapters out of order in the master
+  - straight quote ' or "
+  - a quote opened with ‘ and never closed, a closing ’ with no opening ‘,
+    an inner “ not closed with ”
+  - three full stops instead of …
+  - a paragraph that continues on the next line without a blank line
+
+Warnings (W) are listed but do not block a merge:
+
+  - spelling, see |novel-spelling|
+  - -ize spelling (house style is -ise); size, prize, seize etc. are fine
+  - a capitalised word that looks like a misspelt name: "did you mean …?"
+  - dialogue tags: a capital after the quote (‘…?’ Asked), a full stop
+    before the tag (‘….’ said), a missing comma (‘…’ said), a capital
+    pronoun after ? or ! (‘…?’ He asked)
+  - two quotations back to back (’ ‘): a new speaker starts a new
+    paragraph
+  - a quote left open when the next paragraph opens with ‘: fine only
+    when the same speaker carries on
+  - double quotes used outside dialogue, double spaces, a hyphen used as
+    a dash
+
+A dialogue-tag warning can be a false alarm, e.g. a quoted phrase in
+narration followed by "said".
+
+==============================================================================
+7. Spelling and names                                         *novel-spelling*
+
+Novel files use 'spelllang' en_gb and the novel's own word list,
+`tools/spell/en.utf-8.add`, as 'spellfile'. Use |zg| on a word to add it to
+the list and |zw| to mark a word as wrong. The list is in git with the novel.
+
+Capitalised words in the list are also the known names: a capitalised word
+that is not in the dictionary and is one or two letters away from a known
+name is reported as a possible misspelling (Morozv → Morozov).
+
+                                                    *novel-spelling-apostrophe*
+The spell checker treats ’ as a word break, so it checks isn’t as "isn" and
+"t" and underlines "isn". Contractions whose first half is a word (don’t,
+can’t, it’s) are not affected. Add the fragments with |zg| (isn, didn,
+wasn, wouldn …) to stop the underlining. |:NovelCheck| is not affected: it
+checks words with the apostrophe in place.
+
+==============================================================================
+8. Building the manuscript                                       *novel-build*
+
+|:NovelBuild| runs `tools/build.sh`, which can also be run from a terminal
+in the novel folder: >
+	sh tools/build.sh
+<
+It needs pandoc (installed by the Brewfile). The output follows the UK
+submission format: A4, Times New Roman 12pt, double spacing, 2.5 cm
+margins, 1.27 cm first-line indents with no indent after a heading or scene
+break, no space between paragraphs, each chapter on a new page, a centred #
+for each `* * *`, a title page with the word count, and the header
+"Trubian / ON THE CUSP OF THE STAR / page" from the first chapter.
+
+The layout lives in `tools/reference.docx` and `tools/manuscript.lua`. To
+make a Google Doc, upload the .docx to Drive and use File > Save as Google
+Docs.
+
+==============================================================================
+9. Code                                                           *novel-code*
+
+  ~/.config/nvim/lua/novel/init.lua       setup, folder detection, commands
+  ~/.config/nvim/lua/novel/typeset.lua    |:Typeset| and the typing keys
+  ~/.config/nvim/lua/novel/check.lua      |:NovelCheck|
+  ~/.config/nvim/lua/novel/merge.lua      |:NovelMerge| and |:NovelBuild|
+
+Managed with chezmoi: edit the files under ~/.local/share/chezmoi and run
+`chezmoi apply`. Loaded from `lua/config/autocmds.lua`.
+
+ vim:tw=78:ts=8:noet:ft=help:norl:

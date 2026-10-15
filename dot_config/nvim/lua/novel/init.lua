@@ -80,7 +80,17 @@ function M.setup_buffer(buf)
   })
 end
 
+-- :help novel — build the help tags for ~/.config/nvim/doc when needed
+local function helptags()
+  local doc = vim.fn.stdpath("config") .. "/doc"
+  local txt, tags = vim.uv.fs_stat(doc .. "/novel.txt"), vim.uv.fs_stat(doc .. "/tags")
+  if txt and (not tags or tags.mtime.sec < txt.mtime.sec) then
+    pcall(vim.cmd.helptags, vim.fn.fnameescape(doc))
+  end
+end
+
 function M.setup()
+  helptags()
   vim.api.nvim_create_autocmd("FileType", {
     pattern = "markdown",
     group = vim.api.nvim_create_augroup("novel", { clear = true }),
