@@ -6,6 +6,7 @@ brew "fish"
 brew "mise"
 brew "neovim"
 brew "node"
+brew "pandoc"
 brew "starship"
 brew "zoxide"
 
