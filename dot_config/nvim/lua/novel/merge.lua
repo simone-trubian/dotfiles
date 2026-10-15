@@ -52,13 +52,13 @@ function M.merge()
   local n = last + 1
   local e, w = check.file(root, p("previous"), { expect = n })
   if e > 0 then
-    vim.cmd("copen")
+    vim.cmd("copen | wincmd p")
     vim.notify(("Merge stopped: %d error%s in %s"):format(e, e == 1 and "" or "s", novel.files.previous), vim.log.levels.ERROR)
     return
   end
   local question = ("Merge chapter %d into %s?"):format(n, novel.files.master)
   if w > 0 then
-    vim.cmd("copen")
+    vim.cmd("copen | wincmd p")
     question = ("%d warning%s (listed in the quickfix window). %s"):format(w, w == 1 and "" or "s", question)
   end
   if vim.fn.confirm(question, "&Merge\n&Cancel", 2) ~= 1 then

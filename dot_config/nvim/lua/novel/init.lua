@@ -24,7 +24,18 @@ function M.root(path)
 end
 
 function M.root_or_warn()
-  local root = M.root()
+  local root = vim.b.novel_root or M.root()
+  -- e.g. called from the quickfix window: use a novel buffer that is open
+  if not root then
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      root = root or vim.b[vim.api.nvim_win_get_buf(win)].novel_root
+    end
+  end
+  if not root then
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      root = root or (vim.api.nvim_buf_is_loaded(buf) and vim.b[buf].novel_root or nil)
+    end
+  end
   if not root then
     vim.notify("Not inside a novel folder (needs Manuscript.md and tools/)", vim.log.levels.WARN)
   end

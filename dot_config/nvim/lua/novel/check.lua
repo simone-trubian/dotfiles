@@ -401,7 +401,7 @@ function M.run(path)
   local e, w = M.file(root, path, { expect = M.expect_for(root, path) })
   local msg = ("%s: %d error%s, %d warning%s"):format(vim.fs.basename(path), e, e == 1 and "" or "s", w, w == 1 and "" or "s")
   if e + w > 0 then
-    vim.cmd("copen")
+    vim.cmd("copen | wincmd p")
   end
   vim.notify(msg, e > 0 and vim.log.levels.ERROR or (w > 0 and vim.log.levels.WARN or vim.log.levels.INFO))
 end
