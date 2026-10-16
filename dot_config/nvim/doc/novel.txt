@@ -37,6 +37,7 @@ interrupted speech, British spelling with -ise endings.
   Current Chapter.md    the chapter being written
   Previous Chapter.md   the last chapter, waiting for its final edit
   Manuscript.md         every merged chapter (the master)
+  Outline.md            a short summary of each chapter, see |:NovelCommit|
   tools/                build files, spell list, README
 
 All three Markdown files use the same format:
@@ -81,6 +82,9 @@ typed; fix it by hand or run |:Typeset|, which knows the common cases.
 To type a character literally, press CTRL-V first, e.g. CTRL-V ' for a
 straight quote.
 
+The completion popup (blink.cmp) is turned off in novel files, so it does not
+interrupt the writing. It stays on everywhere else.
+
 ==============================================================================
 4. Commands                                                   *novel-commands*
 
@@ -124,6 +128,17 @@ straight quote.
 	go into the same commit; commit them first if you want them
 	recorded separately.
 
+                                                                *:NovelCommit*
+:NovelCommit [message]
+	Commit `Outline.md` and the spell list (`tools/spell/en.utf-8.add`)
+	to git, whichever of the two has changed. Other files, even staged
+	ones, are left out. Without [message] the message names the chapters
+	whose `## Chapter N` section changed, ignoring blank lines, e.g.
+	"Outline: chapter 26" or "Outline: chapters 27 and 29; spell list".
+	Stops if `Outline.md` has unsaved changes. Examples: >
+		:NovelCommit
+		:NovelCommit Outline: rework the ending
+<
                                                                  *:NovelBuild*
 :NovelBuild
 	Build the submission manuscript with pandoc, in the background:
@@ -136,7 +151,8 @@ straight quote.
   2. Give `Previous Chapter.md` its final edit.
   3. |:NovelCheck| and fix what it lists.
   4. |:NovelMerge|.
-  5. |:NovelBuild| when a .docx is needed.
+  5. Add the merged chapter's summary to `Outline.md`, save, |:NovelCommit|.
+  6. |:NovelBuild| when a .docx is needed.
 
 To revise an earlier chapter, edit `Manuscript.md` directly and run
 `:NovelCheck Manuscript.md` afterwards.
@@ -177,7 +193,8 @@ narration followed by "said".
 
 Novel files use 'spelllang' en_gb and the novel's own word list,
 `tools/spell/en.utf-8.add`, as 'spellfile'. Use |zg| on a word to add it to
-the list and |zw| to mark a word as wrong. The list is in git with the novel.
+the list and |zw| to mark a word as wrong. The list is in git with the novel;
+|:NovelCommit| commits new words.
 
 Capitalised words in the list are also the known names: a capitalised word
 that is not in the dictionary and is one or two letters away from a known
@@ -214,7 +231,8 @@ Docs.
   ~/.config/nvim/lua/novel/init.lua       setup, folder detection, commands
   ~/.config/nvim/lua/novel/typeset.lua    |:Typeset| and the typing keys
   ~/.config/nvim/lua/novel/check.lua      |:NovelCheck|
-  ~/.config/nvim/lua/novel/merge.lua      |:NovelMerge| and |:NovelBuild|
+  ~/.config/nvim/lua/novel/merge.lua      |:NovelMerge|, |:NovelCommit|,
+                                          |:NovelBuild|
 
 Managed with chezmoi: edit the files under ~/.local/share/chezmoi and run
 `chezmoi apply`. Loaded from `lua/config/autocmds.lua`.

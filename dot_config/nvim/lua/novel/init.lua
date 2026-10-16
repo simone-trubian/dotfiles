@@ -7,6 +7,8 @@ M.files = {
   master = "Manuscript.md",
   previous = "Previous Chapter.md",
   current = "Current Chapter.md",
+  outline = "Outline.md",
+  spell = "tools/spell/en.utf-8.add",
 }
 
 --- Novel folder that contains `path`, or nil.
@@ -64,6 +66,8 @@ function M.setup_buffer(buf)
     return
   end
   vim.b[buf].novel_root = root
+  -- no completion popup while writing prose (blink.cmp checks vim.b.completion)
+  vim.b[buf].completion = false
   vim.api.nvim_buf_call(buf, function()
     setup_spell(root)
   end)
@@ -116,6 +120,10 @@ function M.setup()
   vim.api.nvim_create_user_command("NovelMerge", function()
     require("novel.merge").merge()
   end, { desc = "Novel: check Previous Chapter.md, append it to Manuscript.md, rotate chapter files" })
+
+  vim.api.nvim_create_user_command("NovelCommit", function(opts)
+    require("novel.merge").commit(opts.args)
+  end, { nargs = "?", desc = "Novel: commit Outline.md and the spell list" })
 
   vim.api.nvim_create_user_command("NovelBuild", function()
     require("novel.merge").build()

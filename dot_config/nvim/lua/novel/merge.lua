@@ -85,7 +85,103 @@ function M.merge()
     local ok, out = git(root, { "commit", "-m", ("Merge chapter %d"):format(n) })
     msg = msg .. (ok and " Saved in git." or (" Git commit failed: " .. out))
   end
-  vim.notify(msg)
+  vim.notify(msg .. " Add the summary to " .. novel.files.outline .. " and run :NovelCommit.")
+end
+
+local function joined(ns)
+  if #ns == 1 then
+    return tostring(ns[1])
+  end
+  return table.concat(ns, ", ", 1, #ns - 1) .. " and " .. ns[#ns]
+end
+
+--- Chapters whose "## Chapter N" section in Outline.md has uncommitted,
+--- non-blank changes.
+local function outline_chapters(root)
+  local _, diff = git(root, { "diff", "-U0", "--", novel.files.outline })
+  local lines = vim.split(read(root .. "/" .. novel.files.outline) or "", "\n", { plain = true })
+  local function chapter_at(l)
+    for i = math.min(l, #lines), 1, -1 do
+      local n = lines[i]:match("^##%s*Chapter%s+(%d+)")
+      if n then
+        return tonumber(n)
+      end
+    end
+  end
+  local seen, ns = {}, {}
+  local new, in_hunk = 0, false
+  for line in diff:gmatch("[^\n]+") do
+    local c = line:match("^@@ %-%S+ %+(%d+)")
+    if c then
+      new, in_hunk = tonumber(c), true
+    elseif in_hunk then
+      local sign, text = line:sub(1, 1), line:sub(2)
+      if (sign == "+" or sign == "-") and text:match("%S") then
+        local n = chapter_at(math.max(new, 1))
+        if n and not seen[n] then
+          seen[n] = true
+          ns[#ns + 1] = n
+        end
+      end
+      if sign == "+" then
+        new = new + 1
+      end
+    end
+  end
+  table.sort(ns)
+  return ns
+end
+
+--- Commit Outline.md and the spell list. The default message names the
+--- chapters whose outline changed, e.g. "Outline: chapter 26".
+function M.commit(message)
+  local root = novel.root_or_warn()
+  if not root then
+    return
+  end
+  if not vim.uv.fs_stat(root .. "/.git") then
+    vim.notify("The novel folder is not a git repository", vim.log.levels.ERROR)
+    return
+  end
+  local buf = vim.fn.bufnr(root .. "/" .. novel.files.outline)
+  if buf ~= -1 and vim.bo[buf].modified then
+    vim.notify(novel.files.outline .. " has unsaved changes: save it first", vim.log.levels.ERROR)
+    return
+  end
+
+  local paths = {}
+  for _, f in ipairs({ novel.files.outline, novel.files.spell }) do
+    local ok, out = git(root, { "status", "--porcelain", "--", f })
+    if ok and out ~= "" then
+      paths[#paths + 1] = f
+    end
+  end
+  if #paths == 0 then
+    vim.notify("Nothing to commit: " .. novel.files.outline .. " and the spell list are unchanged")
+    return
+  end
+
+  if not message or message == "" then
+    local parts = {}
+    if vim.tbl_contains(paths, novel.files.outline) then
+      local ns = outline_chapters(root)
+      parts[#parts + 1] = #ns == 0 and "Outline"
+        or ("Outline: chapter%s %s"):format(#ns == 1 and "" or "s", joined(ns))
+    end
+    if vim.tbl_contains(paths, novel.files.spell) then
+      parts[#parts + 1] = #parts == 0 and "Spell list" or "spell list"
+    end
+    message = table.concat(parts, "; ")
+  end
+
+  -- commit only these files, whatever else is staged
+  git(root, vim.list_extend({ "add", "--" }, paths))
+  local ok, out = git(root, vim.list_extend({ "commit", "-m", message, "--" }, paths))
+  if ok then
+    vim.notify("Committed: " .. message)
+  else
+    vim.notify("Git commit failed: " .. out, vim.log.levels.ERROR)
+  end
 end
 
 function M.build()
