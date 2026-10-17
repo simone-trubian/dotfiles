@@ -65,8 +65,7 @@ trailing spaces make a hard line break inside a paragraph.
 ==============================================================================
 3. Typing                                                       *novel-typing*
 
-In Insert mode, in novel files only, these keys are remapped
-(buffer-local, so they take priority over auto-pairing):
+In Insert mode, in novel files only, these keys are remapped:
 
   You type          You get ~
   '                 ‘ after a space or opening bracket, otherwise ’
@@ -82,9 +81,10 @@ typed; fix it by hand or run |:Typeset|, which knows the common cases.
 To type a character literally, press CTRL-V first, e.g. CTRL-V ' for a
 straight quote.
 
-The completion popup (blink.cmp) is turned off in all Markdown files, novel
-or not, so it does not interrupt the writing. The setting lives in
-`lua/plugins/blink.lua`.
+In all Markdown files, novel or not, the completion popup (blink.cmp) and
+the auto-closing of quotes and brackets (mini.pairs) are turned off, so
+neither interrupts the writing. The settings live in
+`after/ftplugin/markdown.lua`.
 
 ==============================================================================
 4. Commands                                                   *novel-commands*
