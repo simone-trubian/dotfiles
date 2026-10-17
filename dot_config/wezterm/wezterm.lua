@@ -97,9 +97,9 @@ for _, k in ipairs(pane_keys) do
 	leader_key(k.key, k.action)
 end
 
--- Leader w: pane mode. Stays active, so h/j/k/l can be pressed repeatedly,
+-- Leader p: pane mode. Stays active, so h/j/k/l can be pressed repeatedly,
 -- until Esc (or any key that isn't a pane command).
-leader_key("w", act.ActivateKeyTable({ name = "pane", one_shot = false, until_unknown = true }))
+leader_key("p", act.ActivateKeyTable({ name = "pane", one_shot = false, until_unknown = true }))
 
 local pane_mode = {}
 for _, k in ipairs(pane_keys) do
