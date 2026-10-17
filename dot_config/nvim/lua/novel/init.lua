@@ -66,8 +66,6 @@ function M.setup_buffer(buf)
     return
   end
   vim.b[buf].novel_root = root
-  -- no completion popup while writing prose (blink.cmp checks vim.b.completion)
-  vim.b[buf].completion = false
   vim.api.nvim_buf_call(buf, function()
     setup_spell(root)
   end)

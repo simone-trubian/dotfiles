@@ -82,8 +82,9 @@ typed; fix it by hand or run |:Typeset|, which knows the common cases.
 To type a character literally, press CTRL-V first, e.g. CTRL-V ' for a
 straight quote.
 
-The completion popup (blink.cmp) is turned off in novel files, so it does not
-interrupt the writing. It stays on everywhere else.
+The completion popup (blink.cmp) is turned off in all Markdown files, novel
+or not, so it does not interrupt the writing. The setting lives in
+`lua/plugins/blink.lua`.
 
 ==============================================================================
 4. Commands                                                   *novel-commands*
