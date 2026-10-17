@@ -1,0 +1,6 @@
+# Italian spelling dictionary for Neovim (spelllang en_gb,it); same source
+# Neovim's own spell-file downloader uses.
+[".local/share/nvim/site/spell/it.utf-8.spl"]
+    type = "file"
+    url = "https://ftp.nluug.nl/pub/vim/runtime/spell/it.utf-8.spl"
+    refreshPeriod = "8760h"

@@ -46,6 +46,9 @@ end
 
 --- Spell file kept with the novel, so names added with `zg` travel with it.
 local function setup_spell(root)
+  -- the novel is British English only, whatever the global 'spelllang'
+  vim.opt_local.spelllang = { "en_gb" }
+  vim.opt_local.spell = true
   local add = root .. "/tools/spell/en.utf-8.add"
   if not vim.uv.fs_stat(add) then
     return
@@ -56,8 +59,6 @@ local function setup_spell(root)
     vim.cmd("silent! mkspell! " .. vim.fn.fnameescape(add))
   end
   vim.opt_local.spellfile = add
-  vim.opt_local.spelllang = { "en_gb" }
-  vim.opt_local.spell = true
 end
 
 function M.setup_buffer(buf)
