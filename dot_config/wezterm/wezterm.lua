@@ -36,62 +36,82 @@ wezterm.on("update-status", function(window)
 	local bg = color_scheme.background
 	local fg = color_scheme.foreground
 
-	window:set_right_status(wezterm.format({
-		-- First, we draw the arrow...
-		{ Background = { Color = "none" } },
-		{ Foreground = { Color = bg } },
-		{ Text = SOLID_LEFT_ARROW },
-		-- Then we draw our text
-		{ Background = { Color = bg } },
-		{ Foreground = { Color = fg } },
-		{ Text = " " .. wezterm.hostname() .. " " },
-	}))
+	-- Show the active mode, like Vim's -- INSERT --: LEADER while the
+	-- leader is waiting for a key, PANE while in pane mode.
+	local mode = window:leader_is_active() and "leader" or window:active_key_table()
+	local cells = {}
+	local edge = "none"
+	if mode then
+		local badge = mode == "leader" and color_scheme.ansi[4] or color_scheme.ansi[5]
+		table.insert(cells, { Background = { Color = "none" } })
+		table.insert(cells, { Foreground = { Color = badge } })
+		table.insert(cells, { Text = SOLID_LEFT_ARROW })
+		table.insert(cells, { Background = { Color = badge } })
+		table.insert(cells, { Foreground = { Color = bg } })
+		table.insert(cells, { Text = " " .. mode:upper() .. " " })
+		edge = badge
+	end
+
+	-- First, we draw the arrow...
+	table.insert(cells, { Background = { Color = edge } })
+	table.insert(cells, { Foreground = { Color = bg } })
+	table.insert(cells, { Text = SOLID_LEFT_ARROW })
+	-- Then we draw our text
+	table.insert(cells, { Background = { Color = bg } })
+	table.insert(cells, { Foreground = { Color = fg } })
+	table.insert(cells, { Text = " " .. wezterm.hostname() .. " " })
+
+	window:set_right_status(wezterm.format(cells))
 end)
 
 -- For example, changing the initial geometry for new windows:
 config.initial_cols = 180
 config.initial_rows = 58
 
--- If you're using emacs you probably wanna choose a different leader here,
--- since we're gonna be making it a bit harder to CTRL + A for jumping to
--- the start of a line
-config.leader = { key = "f", mods = "CTRL", timeout_milliseconds = 1000 }
+local act = wezterm.action
 
-config.keys = {
-	-- ... add these new entries to your config.keys table
-	{
-		key = "v",
-		mods = "LEADER",
-		action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
-	},
-	{
-		key = "s",
-		mods = "LEADER",
-		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
-	},
-	{
-		-- I like to use vim direction keybindings, but feel free to replace
-		-- with directional arrows instead.
-		key = "j", -- or DownArrow
-		mods = "LEADER",
-		action = wezterm.action.ActivatePaneDirection("Down"),
-	},
-	{
-		key = "k", -- or UpArrow
-		mods = "LEADER",
-		action = wezterm.action.ActivatePaneDirection("Up"),
-	},
-	{
-		key = "h", -- or LeftArrow
-		mods = "LEADER",
-		action = wezterm.action.ActivatePaneDirection("Left"),
-	},
-	{
-		key = "l", -- or RightArrow
-		mods = "LEADER",
-		action = wezterm.action.ActivatePaneDirection("Right"),
-	},
+-- Leader: Ctrl-;. Terminals can't send Ctrl-; to programs, so Neovim and
+-- Fish never use it and nothing is lost by giving it to WezTerm.
+config.leader = { key = ";", mods = "CTRL", timeout_milliseconds = 2000 }
+
+-- Pane commands, Vim-style: available as Leader <key> and in pane mode.
+local pane_keys = {
+	{ key = "v", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) }, -- side by side, like :vsplit
+	{ key = "s", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) }, -- stacked, like :split
+	{ key = "h", action = act.ActivatePaneDirection("Left") },
+	{ key = "j", action = act.ActivatePaneDirection("Down") },
+	{ key = "k", action = act.ActivatePaneDirection("Up") },
+	{ key = "l", action = act.ActivatePaneDirection("Right") },
+	{ key = "x", action = act.CloseCurrentPane({ confirm = true }) },
+	{ key = "z", action = act.TogglePaneZoomState },
 }
+
+config.keys = {}
+local function leader_key(key, action)
+	-- also match when Ctrl is still held from the leader
+	for _, mods in ipairs({ "LEADER", "LEADER|CTRL" }) do
+		table.insert(config.keys, { key = key, mods = mods, action = action })
+	end
+end
+for _, k in ipairs(pane_keys) do
+	leader_key(k.key, k.action)
+end
+
+-- Leader w: pane mode. Stays active, so h/j/k/l can be pressed repeatedly,
+-- until Esc (or any key that isn't a pane command).
+leader_key("w", act.ActivateKeyTable({ name = "pane", one_shot = false, until_unknown = true }))
+
+local pane_mode = {}
+for _, k in ipairs(pane_keys) do
+	table.insert(pane_mode, k)
+end
+for key, dir in pairs({ H = "Left", J = "Down", K = "Up", L = "Right" }) do
+	table.insert(pane_mode, { key = key, mods = "SHIFT", action = act.AdjustPaneSize({ dir, 5 }) })
+end
+for _, key in ipairs({ "Escape", "q", "Enter" }) do
+	table.insert(pane_mode, { key = key, action = act.PopKeyTable })
+end
+config.key_tables = { pane = pane_mode }
 
 -- Finally, return the configuration to wezterm:
 return config
