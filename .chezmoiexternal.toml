@@ -1,6 +1,11 @@
 # Italian spelling dictionary for Neovim (spelllang en_gb,it); same source
-# Neovim's own spell-file downloader uses.
-[".local/share/nvim/site/spell/it.utf-8.spl"]
+# Neovim's own spell-file downloader uses. Lives in Neovim's data directory,
+# which is nvim-data under AppData on Windows.
+{{ $data := ".local/share/nvim" -}}
+{{ if eq .chezmoi.os "windows" -}}
+{{   $data = "AppData/Local/nvim-data" -}}
+{{ end -}}
+[{{ printf "%s/site/spell/it.utf-8.spl" $data | quote }}]
     type = "file"
     url = "https://ftp.nluug.nl/pub/vim/runtime/spell/it.utf-8.spl"
     refreshPeriod = "8760h"
