@@ -38,10 +38,16 @@ if (Get-Module PSReadLine) {
 # --icons and --hyperlink take an optional value and would swallow them.
 function la { eza @args -la --header --icons --git --hyperlink }
 function tree { eza @args --tree --git --hyperlink --icons }
+function lt { eza @args -la --sort=modified --header --icons --git --hyperlink }   # newest last
+function ldir { eza @args -lD --header --icons --git --hyperlink }                 # folders only
+function tree2 { eza @args --tree --level=2 --git-ignore --git --hyperlink --icons }
 
 # Set zoxide smarter cd (z, zi)
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {
     Invoke-Expression (& { (zoxide init powershell | Out-String) })
+
+    # Jump with zoxide, then open Neovim there: ze novel
+    function ze { z @args; if ($?) { nvim . } }
 }
 
 # Set Starship prompt

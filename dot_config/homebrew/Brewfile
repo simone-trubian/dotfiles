@@ -2,6 +2,7 @@ tap "shaunsingh/sfmono-nerd-font-ligaturized", "https://github.com/shaunsingh/ho
 
 brew "chezmoi"
 brew "eza"
+brew "fzf"
 brew "fish"
 brew "mise"
 brew "neovim"
