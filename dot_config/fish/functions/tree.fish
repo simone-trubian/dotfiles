@@ -1,3 +1,5 @@
+# Arguments go first: --icons and --hyperlink take an optional value and
+# would swallow a directory placed after them.
 function tree
-    eza --tree --git --hyperlink --icons
+    eza $argv --tree --git --hyperlink --icons
 end
