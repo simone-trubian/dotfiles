@@ -6,16 +6,26 @@ local config = wezterm.config_builder()
 
 config.color_scheme = "Tokyo Night"
 
-config.font = wezterm.font({ family = "Liga SFMono Nerd Font" })
+local is_windows = wezterm.target_triple:find("windows") ~= nil
+
+-- SF Mono comes from a Homebrew tap, so Windows uses JetBrains Mono. Picked
+-- per OS rather than as a fallback, which warns on every start.
+local font = wezterm.font(is_windows and "JetBrainsMono Nerd Font" or "Liga SFMono Nerd Font")
+
+config.font = font
 config.font_size = 14
 
 config.window_frame = {
-	font = wezterm.font({ family = "Liga SFMono Nerd Font" }),
+	font = font,
 	font_size = 14,
 }
 
--- Set default program to Fish
-config.default_prog = { "/opt/homebrew/bin/fish", "-l" }
+-- Set default program to Fish, or PowerShell on Windows
+if is_windows then
+	config.default_prog = { "pwsh.exe", "-NoLogo" }
+else
+	config.default_prog = { "/opt/homebrew/bin/fish", "-l" }
+end
 
 -- Removes the title bar, leaving only the tab bar. Keeps
 -- the ability to resize by dragging the window's edges.
