@@ -1,3 +1,6 @@
+# Per-machine hosts that stay out of this repo; ignored when missing.
+Include config.local
+
 Host github.com
   AddKeysToAgent yes
   IdentityFile ~/.ssh/id_ed25519
