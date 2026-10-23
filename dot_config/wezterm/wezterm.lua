@@ -12,12 +12,15 @@ local is_windows = wezterm.target_triple:find("windows") ~= nil
 -- per OS rather than as a fallback, which warns on every start.
 local font = wezterm.font(is_windows and "JetBrainsMono Nerd Font" or "Liga SFMono Nerd Font")
 
+-- JetBrains Mono runs larger than SF Mono, so a point lower on Windows
+local font_size = is_windows and 13 or 14
+
 config.font = font
-config.font_size = 14
+config.font_size = font_size
 
 config.window_frame = {
 	font = font,
-	font_size = 14,
+	font_size = font_size,
 }
 
 -- Set default program to Fish, or PowerShell on Windows
