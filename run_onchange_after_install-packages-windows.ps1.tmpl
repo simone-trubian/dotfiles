@@ -1,0 +1,29 @@
+{{ if eq .chezmoi.os "windows" -}}
+# Windows counterpart of the Brewfile. Re-runs whenever this list changes.
+# Neovim, Node and fish are left out: the first two are installed separately
+# on Windows and fish doesn't run there.
+$packages = @(
+    "twpayne.chezmoi"
+    "eza-community.eza"
+    "Starship.Starship"
+    "ajeetdsouza.zoxide"
+    "wez.wezterm"
+    "JohnMacFarlane.Pandoc"
+)
+
+$failed = @()
+foreach ($id in $packages) {
+    winget list --id $id --exact --accept-source-agreements *> $null
+    if ($LASTEXITCODE -eq 0) { continue }
+
+    Write-Host "Installing $id"
+    $common = @("--id", $id, "--exact", "--silent", "--accept-package-agreements", "--accept-source-agreements")
+    # Per-user first, so no admin rights are needed where the package allows it
+    winget install @common --scope user
+    if ($LASTEXITCODE -ne 0) { winget install @common }
+    if ($LASTEXITCODE -ne 0) { $failed += $id }
+}
+
+# Warn rather than fail, so the rest of chezmoi apply still runs
+if ($failed) { Write-Warning "Not installed: $($failed -join ', ')" }
+{{ end -}}

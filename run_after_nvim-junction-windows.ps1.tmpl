@@ -1,0 +1,19 @@
+{{ if eq .chezmoi.os "windows" -}}
+# Neovim reads its config from AppData\Local\nvim on Windows. Point that at
+# ~/.config/nvim with a junction (needs no admin or Developer Mode), so both
+# OSes share one source. Runs on every apply, so a lost junction comes back;
+# an existing real directory is kept as a backup.
+$ErrorActionPreference = "Stop"
+$link = Join-Path $env:LOCALAPPDATA "nvim"
+$target = Join-Path $HOME ".config\nvim"
+
+$item = Get-Item $link -Force -ErrorAction SilentlyContinue
+if ($item -and $item.LinkType -eq "Junction" -and @($item.Target)[0] -eq $target) { exit 0 }
+if ($item) {
+    $backup = "$link.bak-$(Get-Date -Format yyyyMMddHHmmss)"
+    Write-Host "Moving $link to $backup"
+    Move-Item $link $backup
+}
+New-Item -ItemType Junction -Path $link -Target $target | Out-Null
+Write-Host "Linked $link to $target"
+{{ end -}}
