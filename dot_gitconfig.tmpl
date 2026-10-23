@@ -18,5 +18,12 @@
     date = local
 [push]
 	default = matching
+{{- if ne .chezmoi.os "windows" }}
 [credential]
 	helper = cache --timeout=3600
+{{- end }}
+
+# Per-machine settings (identity, credentials, overrides) that stay out of
+# this repo. Included last so they win; ignored when the file is missing.
+[include]
+	path = ~/.gitconfig.local
