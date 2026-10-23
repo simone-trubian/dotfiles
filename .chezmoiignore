@@ -1,1 +1,14 @@
 .config/fish/fish_variables
+
+{{ if ne .chezmoi.os "darwin" }}
+.config/homebrew
+{{ end }}
+
+{{ if eq .chezmoi.os "windows" }}
+# No fish on Windows (the PowerShell profile stands in), and mise stays off
+# so it doesn't take over the system Python.
+.config/fish
+.config/mise
+{{ else }}
+Documents
+{{ end }}
