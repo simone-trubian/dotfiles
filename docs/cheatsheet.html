@@ -1,0 +1,363 @@
+<title>Terminal Cheat Sheet</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: sticky control bar, then tool sections flowing in newspaper columns; key chips left, meaning right.
+   Palette: Tokyo Night (dark) and Tokyo Night Day (light), the theme WezTerm and Neovim use. */
+:root {
+  --bg: #e1e2e7; --surface: #eceef5; --line: #c4c8da; --fg: #343b58; --muted: #5a638c;
+  --key-bg: #f6f7fb; --key-line: #a8aecb;
+  --blue: #2e7de9; --purple: #9854f1; --green: #587539; --orange: #b15c00; --cyan: #007197; --red: #c4304f;
+  --ours: #9854f1;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1a1b26; --surface: #1f2335; --line: #2f3549; --fg: #c0caf5; --muted: #8189b5;
+    --key-bg: #292e42; --key-line: #414868;
+    --blue: #7aa2f7; --purple: #bb9af7; --green: #9ece6a; --orange: #ff9e64; --cyan: #7dcfff; --red: #f7768e;
+    --ours: #bb9af7; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1a1b26; --surface: #1f2335; --line: #2f3549; --fg: #c0caf5; --muted: #8189b5;
+  --key-bg: #292e42; --key-line: #414868;
+  --blue: #7aa2f7; --purple: #bb9af7; --green: #9ece6a; --orange: #ff9e64; --cyan: #7dcfff; --red: #f7768e;
+  --ours: #bb9af7; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.45 var(--font-body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.wrap { max-width: 92rem; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+header .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; padding-block: 12px; }
+h1 { font-size: 1.15rem; font-weight: 600; margin: 0; letter-spacing: -0.01em; white-space: nowrap; }
+h1 span { color: var(--muted); font-weight: 400; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; flex: 1 1 28rem; justify-content: flex-end; min-width: 0; }
+.search { position: relative; flex: 1 1 14rem; max-width: 24rem; min-width: 0; }
+.search input { width: 100%; font: inherit; font-size: 0.95rem; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 7px 34px 7px 10px; }
+.search input:focus { outline: 2px solid var(--blue); outline-offset: -1px; border-color: transparent; }
+.search kbd { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.seg button, .chipbtn { font: inherit; font-size: 0.85rem; color: var(--muted); background: transparent; border: 0; padding: 6px 12px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--bg); color: var(--fg); font-weight: 600; }
+.chipbtn { border: 1px solid var(--line); border-radius: 6px; display: inline-flex; gap: 6px; align-items: center; }
+.chipbtn[aria-pressed="true"] { color: var(--ours); border-color: var(--ours); font-weight: 600; }
+button:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+
+.intro { display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--muted); font-size: 0.85rem; padding-block: 14px 4px; }
+.intro b { color: var(--fg); font-weight: 500; }
+
+main .wrap { padding-block: 10px 40px; }
+.cols { column-width: 25rem; column-gap: 28px; }
+section { break-inside: avoid-column; margin: 0 0 22px; display: inline-block; width: 100%; }
+section > h2 { display: flex; align-items: baseline; gap: 10px; margin: 0 0 6px; padding-bottom: 6px; border-bottom: 2px solid var(--tone); font-size: 1.05rem; font-weight: 600; }
+section > h2::before { content: ""; width: 10px; height: 10px; border-radius: 2px; background: var(--tone); align-self: center; flex: none; }
+section > h2 small { margin-left: auto; font: 400 0.8rem var(--font-mono); color: var(--muted); }
+h3 { margin: 12px 0 2px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tone); }
+
+.row { display: grid; grid-template-columns: minmax(7.5rem, 42%) 1fr; gap: 12px; padding: 5px 0; border-bottom: 1px dashed var(--line); align-items: baseline; }
+.row:last-child { border-bottom: 0; }
+.keys { display: flex; flex-wrap: wrap; gap: 4px; align-items: baseline; min-width: 0; }
+.desc { min-width: 0; font-size: 0.92rem; }
+.desc .tag { display: inline-block; margin-left: 6px; font: 600 0.62rem/1 var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ours); border: 1px solid var(--ours); border-radius: 3px; padding: 2px 4px; vertical-align: 2px; }
+.row.ours .keys kbd, .row.ours .keys code.cmd { border-color: var(--ours); }
+kbd { font: 600 0.78rem/1 var(--font-mono); color: var(--fg); background: var(--key-bg); border: 1px solid var(--key-line); border-bottom-width: 2px; border-radius: 4px; padding: 3px 6px 2px; white-space: nowrap; }
+.or { font-size: 0.75rem; color: var(--muted); }
+code { font: 0.84em var(--font-mono); background: var(--key-bg); border-radius: 3px; padding: 1px 4px; overflow-wrap: anywhere; }
+code.cmd { font-size: 0.8rem; font-weight: 600; border: 1px solid var(--key-line); padding: 3px 6px 2px; color: var(--fg); }
+.note { font-size: 0.82rem; color: var(--muted); margin: 6px 0 0; }
+
+#empty { text-align: center; color: var(--muted); padding: 48px 0; }
+footer { color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 10px; }
+
+@media (max-width: 30rem) {
+  .row { grid-template-columns: 1fr; gap: 3px; }
+  .controls { justify-content: flex-start; }
+  .search { max-width: none; flex-basis: 100%; }
+}
+@media print {
+  :root { --bg: #fff; --surface: #fff; --key-bg: #fff; color-scheme: light; }
+  header { position: static; } .controls, .intro, body::before { display: none; }
+  body { font-size: 10px; } .cols { column-count: 3; column-gap: 16px; } section { margin-bottom: 10px; }
+}
+@media (prefers-reduced-motion: no-preference) { .search input { transition: border-color .15s; } }
+</style>
+
+<header>
+  <div class="wrap">
+    <h1>Terminal Cheat Sheet <span>· WezTerm, shell, LazyVim</span></h1>
+    <div class="controls">
+      <label class="search">
+        <input id="q" type="search" placeholder="Filter: split, spell, tab…" autocomplete="off" aria-label="Filter the cheat sheet">
+        <kbd id="slash">/</kbd>
+      </label>
+      <div class="seg" role="group" aria-label="Computer">
+        <button id="os-m" type="button" aria-pressed="true">Mac</button>
+        <button id="os-w" type="button" aria-pressed="false">Windows</button>
+      </div>
+      <button id="ours" class="chipbtn" type="button" aria-pressed="false">Only ours</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="intro" id="intro"></div>
+    <div class="cols" id="sheet"></div>
+    <p id="empty" hidden>Nothing matches. Try a shorter word, or press Esc to clear the filter.</p>
+    <footer>
+      Checked against your config on 24 October 2026: wezterm.lua and <code>wezterm show-keys</code>, Fish 4.9.3 in vi mode, the installed LazyVim, and <code>:help novel</code>.
+      The source is <code>docs/cheatsheet.html</code> in your dotfiles; it is not copied into your home folder.
+    </footer>
+  </div>
+</main>
+
+<script>
+// k: keys (space = press in turn, "or" = alternatives); {m, w} for Mac / Windows variants.
+// o: ours (we made it), c: a typed command rather than keys, only: "m" or "w".
+const O = { o: true }, C = { c: true }, OC = { o: true, c: true };
+const r = (k, d, opt = {}) => ({ k, d, ...opt });
+
+const SECTIONS = [
+  { name: "WezTerm", tone: "--blue", meta: "Leader Ctrl+;", groups: [
+    { name: "Leader (ours)", rows: [
+      r("Ctrl+;", "Leader: press, release, then one of the keys below within 2 s. The status bar shows LEADER.", O),
+      r("Leader v", "Split side by side, like `:vsplit`", O),
+      r("Leader s", "Split stacked, like `:split`", O),
+      r("Leader h/j/k/l", "Move to the pane left, below, above, right", O),
+      r("Leader z", "Zoom the pane to the full window, again to restore", O),
+      r("Leader x", "Close the pane (asks first)", O),
+    ]},
+    { name: "Pane mode (ours)", rows: [
+      r("Leader p", "Enter pane mode: keys repeat without the leader. The status bar shows PANE.", O),
+      r("h/j/k/l", "Move between panes", O),
+      r("H/J/K/L", "Resize the pane by 5 cells", O),
+      r("v/s/x/z", "Split, close, zoom, as with the leader", O),
+      r("Esc or q or Enter", "Leave pane mode (any other key also leaves)", O),
+    ]},
+    { name: "Tabs and windows", rows: [
+      r({ m: "Cmd+T", w: "Ctrl+Shift+T" }, "New tab"),
+      r({ m: "Cmd+W", w: "Ctrl+Shift+W" }, "Close tab (asks first)"),
+      r({ m: "Cmd+Shift+] or Cmd+Shift+[", w: "Ctrl+Tab or Ctrl+Shift+Tab" }, "Next / previous tab"),
+      r({ m: "Cmd+1…9", w: "Ctrl+Shift+1…9" }, "Go to tab 1 to 8; 9 is the last tab"),
+      r({ m: "Cmd+N", w: "Ctrl+Shift+N" }, "New window"),
+      r({ m: "Opt+Enter", w: "Alt+Enter" }, "Full screen on / off"),
+    ]},
+    { name: "Scrollback and text", rows: [
+      r({ m: "Cmd+F", w: "Ctrl+Shift+F" }, "Search the scrollback"),
+      r("Ctrl+Shift+X", "Copy mode: move with h j k l w b, select with v, V or Ctrl+V, copy with y, leave with q"),
+      r("Ctrl+Shift+Space", "Quick select: letters appear on URLs, paths and hashes; type one to copy it"),
+      r("Ctrl+Shift+U", "Character picker: search for “e grave” or an emoji, Enter copies it"),
+      r({ m: "Cmd+C or Cmd+V", w: "Ctrl+Shift+C or Ctrl+Shift+V" }, "Copy / paste"),
+      r({ m: "Cmd+K", w: "Ctrl+Shift+K" }, "Clear the scrollback"),
+    ]},
+    { name: "Settings", rows: [
+      r("Ctrl+Shift+P", "Command palette: every WezTerm action, searchable"),
+      r({ m: "Cmd+= or Cmd+- or Cmd+0", w: "Ctrl+= or Ctrl+- or Ctrl+0" }, "Font bigger / smaller / back to normal"),
+      r({ m: "Cmd+R", w: "Ctrl+Shift+R" }, "Reload the config (it also reloads on save)"),
+    ]},
+  ]},
+
+  { name: { m: "Fish", w: "PowerShell" }, tone: "--green", meta: { m: "vi mode", w: "PSReadLine vi mode" }, groups: [
+    { name: "Listing (ours)", rows: [
+      r("la [dir]", "Everything, long form, with git status and icons", OC),
+      r("lt [dir]", "Same, sorted by date: newest at the bottom", OC),
+      r("ldir [dir]", "Folders only", OC),
+      r("tree [dir]", "Full tree", OC),
+      r("tree2 [dir]", "Two levels deep, skipping git-ignored folders like `build/`", OC),
+    ]},
+    { name: "Jumping (ours)", rows: [
+      r("z novel", "Go to the folder you visit most whose path matches “novel”", OC),
+      r("z nov cusp", "Several words narrow it down: both must match, in order", OC),
+      r("zi [word]", "Pick from a list of your folders (fzf); type to filter", OC),
+      r("ze novel", "Jump like `z`, then open Neovim there", OC),
+      r("z -", "Back to the previous folder", OC),
+    ]},
+    { name: "Command line", rows: [
+      r("Esc", "Normal mode: move and edit the line with Vim keys; `i` or `a` to type again"),
+      r({ m: "Esc /", w: "Ctrl+R" }, "Search the whole history (Ctrl+R does nothing in Fish vi mode)"),
+      r("↑", "Previous command; in Fish, only those starting with what you typed"),
+      r({ m: "→ or Ctrl+N", w: "→" }, "Accept the grey suggestion"),
+      r("Alt+↑ or Alt+.", "Insert an argument from an earlier command", { only: "m" }),
+      r("Tab", "Complete; Tab again cycles through the choices"),
+      r({ m: "Alt+E", w: "Esc v" }, "Edit the command in Neovim, run it on save and quit"),
+      r({ m: "Alt+H", w: "F1" }, "Help for the command being typed"),
+      r("Alt+L", "List the folder under the cursor without running anything", { only: "m" }),
+      r("Alt+S", "Put sudo in front of the command", { only: "m" }),
+      r("Ctrl+C", "Clear the line"),
+      r("Ctrl+L", "Clear the screen"),
+    ]},
+  ], note: { m: "Alt is the left Option key; your right Option is Caps Lock on the Kinesis.", w: "Fish isn't installed on Windows; the PowerShell profile has the same la, lt, ldir, tree, tree2, z, zi and ze." } },
+
+  { name: "LazyVim", tone: "--purple", meta: "Leader Space", groups: [
+    { name: "When you forget", rows: [
+      r("Space", "Wait a moment: a menu of everything under the leader appears"),
+      r("Space s k", "Search all keymaps by name"),
+      r("Space ?", "Keymaps for this buffer"),
+      r("Space s h", "Search the help pages"),
+    ]},
+    { name: "Find", rows: [
+      r("Space Space", "Find a file in the project"),
+      r("Space /", "Search text in the project"),
+      r("Space ,", "Switch between open files"),
+      r("Space f r", "Recent files"),
+      r("Space e", "File explorer"),
+      r("Space s R", "Reopen the last search"),
+    ]},
+    { name: "Move", rows: [
+      r("s", "Flash: type two letters you see on screen, then the label that appears"),
+      r("Ctrl+O or Ctrl+I", "Jump back / forward to where you were"),
+      r("gd or gr or K", "Code: definition / references / documentation"),
+      r("]d or [d", "Next / previous problem"),
+    ]},
+    { name: "Edit", rows: [
+      r("ci\" or ciq", "Change inside straight quotes / the nearest quotes of any kind. Curly ‘ ’ are not matched."),
+      r("cib or dap", "Change inside the nearest brackets / delete a paragraph"),
+      r("gcc or gc", "Comment the line / the selection or motion"),
+      r("Alt+J or Alt+K", "Move the line or selection down / up"),
+      r("u or Ctrl+R", "Undo / redo"),
+      r("Space s u", "Undo history as a tree"),
+      r("Ctrl+S", "Save, in any mode"),
+      r("Space c f", "Format the file"),
+    ]},
+    { name: "Windows and buffers", rows: [
+      r("Space | or Space -", "Split right / below"),
+      r("Ctrl+h/j/k/l", "Move between splits"),
+      r("Space w d or Space w m", "Close the split / zoom it"),
+      r("Shift+H or Shift+L", "Previous / next buffer"),
+      r("Space b d", "Close the buffer"),
+      r("Space b b", "Back to the other buffer"),
+      r("Space q q", "Quit everything"),
+    ]},
+    { name: "Tools", rows: [
+      r("Space l", "Lazy: update and inspect plugins"),
+      r(":Mason", "Install language servers and formatters", C),
+      r("Space f t", "Terminal in a floating window"),
+      r("Space g s or Space g l", "Git status / git log"),
+      r("Space u w or Space u z", "Toggle line wrap / zen mode"),
+    ]},
+  ]},
+
+  { name: "Writing", tone: "--orange", meta: "Markdown", groups: [
+    { name: "Spelling", rows: [
+      r("]s or [s", "Next / previous misspelt word"),
+      r("z=", "Suggestions for the word under the cursor"),
+      r("zg or zw or zug", "Add the word to the dictionary / mark it wrong / undo that"),
+      r("Space u s", "Spelling on / off"),
+      r("<!-- vim: set spelllang=it: -->", "In the last five lines, makes one file Italian only. Elsewhere English and Italian are both accepted.", OC),
+    ]},
+    { name: "Accents", rows: [
+      r("Ctrl+K e !", "è  (grave: a ! → à, o ! → ò, u ! → ù, i ! → ì, E ! → È)"),
+      r("Ctrl+K e '", "é  (acute)"),
+      r(":digraphs", "The full list of digraphs", C),
+    ]},
+    { name: "Markdown (ours)", rows: [
+      r("Status bar", "Word count; select text to count just the selection", O),
+      r("g Ctrl+G", "Words, lines and characters, down to the cursor"),
+      r("j or k", "Move by screen line, so a long paragraph line is easy to walk"),
+      r("Typing", "No completion popup and no auto-closed quotes or brackets in Markdown", O),
+    ]},
+  ]},
+
+  { name: "Novel", tone: "--red", meta: "folder with Manuscript.md", groups: [
+    { name: "Commands (ours)", rows: [
+      r(":NovelCheck [file]", "Check `Previous Chapter.md` (or a file); problems go to the quickfix list", OC),
+      r("]q or [q", "Next / previous problem in the quickfix list"),
+      r(":NovelMerge", "Check, append to `Manuscript.md`, rotate the chapter files, commit", OC),
+      r(":NovelCommit [msg]", "Commit `Outline.md` and the spell list; the message names the chapters", OC),
+      r(":NovelBuild", "Build the submission .docx with pandoc into `build/`", OC),
+      r(":'<,'>Typeset", "House typography for pasted text; without a range, the whole file", OC),
+      r(":help novel", "The full manual, including the chapter cycle", OC),
+    ]},
+    { name: "Typing in novel files (ours)", rows: [
+      r("' or \"", "‘ ’ or “ ”, opening after a space, closing otherwise", O),
+      r("...", "…", O),
+      r("Space -- or ---", "Spaced en dash ( – ) / closed em dash (—)", O),
+      r("Ctrl+V '", "A literal straight quote", O),
+      r("zg", "Adds a name to the novel's own spell list, `tools/spell/en.utf-8.add`", O),
+    ]},
+  ]},
+
+  { name: "chezmoi", tone: "--cyan", meta: "~/.local/share/chezmoi", groups: [
+    { name: "Daily use", rows: [
+      r("chezmoi edit ~/.config/fish/config.fish", "Edit the tracked copy of a file", C),
+      r("chezmoi diff", "See what apply would change", C),
+      r("chezmoi apply", "Write the changes into your home folder (and run brew bundle if the Brewfile changed)", C),
+      r("chezmoi status", "Files that differ from the tracked copies", C),
+      r("chezmoi add <file>", "Start tracking a file", C),
+      r("chezmoi cd", "Open a shell in the repo to git commit and push; `exit` to come back", C),
+      r("chezmoi update", "Pull from GitHub and apply: how the other computer catches up", C),
+    ]},
+  ]},
+];
+
+const $ = (id) => document.getElementById(id);
+const pick = (v, os) => (v && typeof v === "object" ? v[os] : v);
+const esc = (s) => s.replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+const inline = (s) => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>");
+
+function keysHtml(row, os) {
+  const k = pick(row.k, os);
+  if (row.c) return `<code class="cmd">${esc(k)}</code>`;
+  return k.split(" ").map((t) => (t === "or" ? '<span class="or">or</span>' : `<kbd>${esc(t)}</kbd>`)).join("");
+}
+
+const state = { os: "m", ours: false, q: "" };
+try {
+  const saved = JSON.parse(localStorage.getItem("cheatsheet") || "{}");
+  if (saved.os === "m" || saved.os === "w") state.os = saved.os;
+  else if (/Windows/.test(navigator.userAgent)) state.os = "w";
+  state.ours = !!saved.ours;
+} catch (e) { if (/Windows/.test(navigator.userAgent)) state.os = "w"; }
+
+function save() { try { localStorage.setItem("cheatsheet", JSON.stringify({ os: state.os, ours: state.ours })); } catch (e) {} }
+
+function render() {
+  const os = state.os, words = state.q.toLowerCase().split(/\s+/).filter(Boolean);
+  let total = 0, ours = 0, shown = 0;
+  const html = SECTIONS.map((s) => {
+    const sname = pick(s.name, os);
+    const groups = s.groups.map((g) => {
+      const rows = g.rows.filter((row) => !row.only || row.only === os).filter((row) => {
+        total++; if (row.o) ours++;
+        if (state.ours && !row.o) return false;
+        const hay = `${sname} ${g.name} ${pick(row.k, os)} ${row.d}`.toLowerCase();
+        return words.every((w) => hay.includes(w));
+      });
+      shown += rows.length;
+      if (!rows.length) return "";
+      return `<h3>${esc(g.name)}</h3>` + rows.map((row) =>
+        `<div class="row${row.o ? " ours" : ""}"><div class="keys">${keysHtml(row, os)}</div>` +
+        `<div class="desc">${inline(row.d)}${row.o ? '<span class="tag">ours</span>' : ""}</div></div>`).join("");
+    }).join("");
+    if (!groups) return "";
+    const note = s.note && !words.length && !state.ours ? `<p class="note">${inline(pick(s.note, os))}</p>` : "";
+    return `<section style="--tone: var(${s.tone})"><h2>${esc(sname)}<small>${esc(pick(s.meta, os))}</small></h2>${groups}${note}</section>`;
+  }).join("");
+  $("sheet").innerHTML = html;
+  $("empty").hidden = shown > 0;
+  $("intro").innerHTML = `<span><b>${total}</b> entries, <b>${ours}</b> made by us (purple)</span>` +
+    `<span>Keys separated by a space are pressed one after the other; “or” separates alternatives.</span>` +
+    `<span>Press <kbd>/</kbd> to filter, <kbd>Esc</kbd> to clear.</span>`;
+  $("os-m").setAttribute("aria-pressed", os === "m");
+  $("os-w").setAttribute("aria-pressed", os === "w");
+  $("ours").setAttribute("aria-pressed", state.ours);
+}
+
+$("q").addEventListener("input", (e) => { state.q = e.target.value; render(); });
+$("os-m").addEventListener("click", () => { state.os = "m"; save(); render(); });
+$("os-w").addEventListener("click", () => { state.os = "w"; save(); render(); });
+$("ours").addEventListener("click", () => { state.ours = !state.ours; save(); render(); });
+document.addEventListener("keydown", (e) => {
+  const inField = e.target === $("q");
+  if (e.key === "/" && !inField) { e.preventDefault(); $("q").focus(); }
+  else if (e.key === "Escape" && inField) { $("q").value = ""; state.q = ""; $("q").blur(); render(); }
+});
+render();
+</script>

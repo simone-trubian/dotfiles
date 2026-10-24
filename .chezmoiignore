@@ -12,3 +12,6 @@
 {{ else }}
 Documents
 {{ end }}
+
+# Cheat sheet page, published as an artifact; not a dotfile
+docs
