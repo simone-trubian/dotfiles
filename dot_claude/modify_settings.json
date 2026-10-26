@@ -1,0 +1,56 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /*
+  Merge the shared Claude Code settings into the machine's own
+  ~/.claude/settings.json. Claude Code rewrites this file itself, and some
+  settings (other hooks, auto mode) belong to one machine only, so this sets
+  the keys below and leaves everything else as it is.
+*/ -}}
+{{- $s := dict -}}
+{{- if trim .chezmoi.stdin -}}
+{{-   $s = fromJson .chezmoi.stdin -}}
+{{- end -}}
+
+{{- /* Preferences */ -}}
+{{- $s = setValueAtPath "model" "opus" $s -}}
+{{- $s = setValueAtPath "modelSettings.claude-opus-5-5.effortLevel" "high" $s -}}
+{{- $s = setValueAtPath "theme" "dark" $s -}}
+{{- $s = setValueAtPath "editorMode" "vim" $s -}}
+{{- $s = setValueAtPath "autoUpdatesChannel" "latest" $s -}}
+{{- $s = setValueAtPath "cleanupPeriodDays" 30 $s -}}
+{{- $s = setValueAtPath "autoDreamEnabled" false $s -}}
+
+{{- /* Status line */ -}}
+{{- $s = setValueAtPath "statusLine" (dict "type" "command" "command" "node ~/.claude/statusline.js") $s -}}
+
+{{- /* Memory writes need approval: an ask rule for file edits, plus the gate
+       hook, which also catches shell commands. Both are added once; other
+       rules and hooks are kept. */ -}}
+{{- $rule := "Edit(~/.claude/projects/*/memory/**)" -}}
+{{- $ask := list -}}
+{{- if and (hasKey $s "permissions") (hasKey $s.permissions "ask") -}}
+{{-   $ask = $s.permissions.ask -}}
+{{- end -}}
+{{- if not (has $rule $ask) -}}
+{{-   $ask = append $ask $rule -}}
+{{- end -}}
+{{- $s = setValueAtPath "permissions.ask" $ask $s -}}
+
+{{- $gate := "node ~/.claude/hooks/memory-write-gate.js" -}}
+{{- $pre := list -}}
+{{- if and (hasKey $s "hooks") (hasKey $s.hooks "PreToolUse") -}}
+{{-   range $group := $s.hooks.PreToolUse -}}
+{{-     $isGate := false -}}
+{{-     range $h := (get $group "hooks") -}}
+{{-       if eq (toString (get $h "command")) $gate -}}
+{{-         $isGate = true -}}
+{{-       end -}}
+{{-     end -}}
+{{-     if not $isGate -}}
+{{-       $pre = append $pre $group -}}
+{{-     end -}}
+{{-   end -}}
+{{- end -}}
+{{- $pre = append $pre (dict "matcher" "Write|Edit|NotebookEdit|Bash|PowerShell" "hooks" (list (dict "type" "command" "command" $gate "timeout" 10))) -}}
+{{- $s = setValueAtPath "hooks.PreToolUse" $pre $s -}}
+
+{{- toPrettyJson "  " $s }}
