@@ -1,0 +1,14 @@
+{{ if eq .chezmoi.os "windows" -}}
+# Start the Mac-style key script at login with a Startup-folder shortcut to
+# ~/.config/autohotkey/mac-keys.ahk, opened through AutoHotkey's file
+# association. Runs on every apply, so a deleted shortcut comes back.
+$ErrorActionPreference = "Stop"
+$target = Join-Path $HOME ".config\autohotkey\mac-keys.ahk"
+$link = Join-Path ([Environment]::GetFolderPath("Startup")) "mac-keys.lnk"
+
+$shortcut = (New-Object -ComObject WScript.Shell).CreateShortcut($link)
+if ($shortcut.TargetPath -eq $target) { exit 0 }
+$shortcut.TargetPath = $target
+$shortcut.Save()
+Write-Host "Added $link"
+{{ end -}}

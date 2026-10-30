@@ -11,6 +11,7 @@
 .config/mise
 {{ else }}
 Documents
+.config/autohotkey
 {{ end }}
 
 # Cheat sheet page, published as an artifact; not a dotfile
