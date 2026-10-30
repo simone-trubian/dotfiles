@@ -112,7 +112,7 @@ footer { color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--lin
     <div class="cols" id="sheet"></div>
     <p id="empty" hidden>Nothing matches. Try a shorter word, or press Esc to clear the filter.</p>
     <footer>
-      Checked against your config on 24 October 2026: wezterm.lua and <code>wezterm show-keys</code>, Fish 4.9.3 in vi mode, the installed LazyVim, and <code>:help novel</code>.
+      Checked against your config on 24 October 2026: wezterm.lua and <code>wezterm show-keys</code>, Fish 4.9.3 in vi mode, the installed LazyVim, and <code>:help novel</code>. Mac keys on Windows added on 30 October from <code>mac-keys.ahk</code>.
       The source is <code>docs/cheatsheet.html</code> in your dotfiles; it is not copied into your home folder.
     </footer>
   </div>
@@ -124,7 +124,36 @@ footer { color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--lin
 const O = { o: true }, C = { c: true }, OC = { o: true, c: true };
 const r = (k, d, opt = {}) => ({ k, d, ...opt });
 
+const W = { o: true, only: "w" };
+
 const SECTIONS = [
+  { name: "Mac keys", tone: "--cyan", meta: "AutoHotkey", groups: [
+    { name: "Which key is which (ours)", rows: [
+      r("Cmd", "The key beside the space bar (it sends Alt)", W),
+      r("Opt", "The next key out (it sends Win). Opt+letter keeps the Windows shortcuts: Opt+V clipboard history, Opt+E Explorer, Opt+L lock.", W),
+    ]},
+    { name: "Apps (ours)", rows: [
+      r("Cmd+C or Cmd+V or Cmd+X", "Copy / paste / cut. In WezTerm they send Ctrl+Shift, so Ctrl+C still interrupts.", W),
+      r("Cmd+Z or Cmd+Shift+Z", "Undo / redo", W),
+      r("Cmd+Q", "Quit the app (Alt+F4)", W),
+      r("Cmd+H or Cmd+M", "Minimise the window", W),
+      r("Cmd+Tab", "Switch apps", W),
+      r("Cmd+Space", "Start menu search, in place of Spotlight", W),
+      r("Cmd+Shift+4", "Screenshot with the Snipping Tool (Cmd+Shift+3 too)", W),
+      r("Cmd+[ or Cmd+]", "Back / forward in the browser", W),
+      r("Ctrl+Cmd+Q", "Lock the screen", W),
+    ]},
+    { name: "Text (ours)", rows: [
+      r("Cmd+← or Cmd+→", "Start / end of the line; with Shift, select to there", W),
+      r("Cmd+↑ or Cmd+↓", "Top / bottom of the document; with Shift, select to there", W),
+      r("Opt+← or Opt+→", "Back / forward a word; with Shift, select it", W),
+      r("Cmd+Backspace or Opt+Backspace", "Delete to the start of the line / the word before", W),
+    ]},
+    { name: "Desktops (ours)", rows: [
+      r("Ctrl+← or Ctrl+→", "Previous / next desktop, as with Spaces on the Mac", W),
+    ]},
+  ], note: { w: "The AutoHotkey script `~/.config/autohotkey/mac-keys.ahk` starts at login; pause or quit it from the green H in the tray. In WezTerm the key beside the space bar is Cmd, so nothing sends Alt: LazyVim's Alt+J and Alt+K don't work on Windows." } },
+
   { name: "WezTerm", tone: "--blue", meta: "Leader Ctrl+;", groups: [
     { name: "Leader (ours)", rows: [
       r("Ctrl+;", "Leader: press, release, then one of the keys below within 2 s. The status bar shows LEADER.", O),
@@ -142,25 +171,25 @@ const SECTIONS = [
       r("Esc or q or Enter", "Leave pane mode (any other key also leaves)", O),
     ]},
     { name: "Tabs and windows", rows: [
-      r({ m: "Cmd+T", w: "Ctrl+Shift+T" }, "New tab"),
-      r({ m: "Cmd+W", w: "Ctrl+Shift+W" }, "Close tab (asks first)"),
+      r("Cmd+T", "New tab"),
+      r("Cmd+W", "Close tab (asks first)"),
       r({ m: "Cmd+Shift+] or Cmd+Shift+[", w: "Ctrl+Tab or Ctrl+Shift+Tab" }, "Next / previous tab"),
-      r({ m: "Cmd+1…9", w: "Ctrl+Shift+1…9" }, "Go to tab 1 to 8; 9 is the last tab"),
-      r({ m: "Cmd+N", w: "Ctrl+Shift+N" }, "New window"),
-      r({ m: "Opt+Enter", w: "Alt+Enter" }, "Full screen on / off"),
+      r("Cmd+1…9", "Go to tab 1 to 8; 9 is the last tab"),
+      r("Cmd+N", "New window"),
+      r({ m: "Opt+Enter", w: "Cmd+Enter" }, "Full screen on / off"),
     ]},
     { name: "Scrollback and text", rows: [
-      r({ m: "Cmd+F", w: "Ctrl+Shift+F" }, "Search the scrollback"),
+      r("Cmd+F", "Search the scrollback"),
       r("Ctrl+Shift+X", "Copy mode: move with h j k l w b, select with v, V or Ctrl+V, copy with y, leave with q"),
       r("Ctrl+Shift+Space", "Quick select: letters appear on URLs, paths and hashes; type one to copy it"),
       r("Ctrl+Shift+U", "Character picker: search for “e grave” or an emoji, Enter copies it"),
-      r({ m: "Cmd+C or Cmd+V", w: "Ctrl+Shift+C or Ctrl+Shift+V" }, "Copy / paste"),
-      r({ m: "Cmd+K", w: "Ctrl+Shift+K" }, "Clear the scrollback"),
+      r("Cmd+C or Cmd+V", "Copy / paste"),
+      r("Cmd+K", "Clear the scrollback"),
     ]},
     { name: "Settings", rows: [
       r("Ctrl+Shift+P", "Command palette: every WezTerm action, searchable"),
       r({ m: "Cmd+= or Cmd+- or Cmd+0", w: "Ctrl+= or Ctrl+- or Ctrl+0" }, "Font bigger / smaller / back to normal"),
-      r({ m: "Cmd+R", w: "Ctrl+Shift+R" }, "Reload the config (it also reloads on save)"),
+      r("Cmd+R", "Reload the config (it also reloads on save)"),
     ]},
   ]},
 
@@ -222,7 +251,7 @@ const SECTIONS = [
       r("ci\" or ciq", "Change inside straight quotes / the nearest quotes of any kind. Curly ‘ ’ are not matched."),
       r("cib or dap", "Change inside the nearest brackets / delete a paragraph"),
       r("gcc or gc", "Comment the line / the selection or motion"),
-      r("Alt+J or Alt+K", "Move the line or selection down / up"),
+      r("Alt+J or Alt+K", "Move the line or selection down / up", { only: "m" }),
       r("u or Ctrl+R", "Undo / redo"),
       r("Space s u", "Undo history as a tree"),
       r("Ctrl+S", "Save, in any mode"),
