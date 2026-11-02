@@ -14,8 +14,8 @@ Fit the channel:
 | Channel | Shape |
 |---|---|
 | Email (Outlook) | Subject line. Greeting by first name, short paragraphs, sign-off as the user signs earlier messages. Bold, bullets and links are fine. |
-| Teams or Slack chat | No subject. "Hi Name," at most, then the point. Short; bullets are fine; no headings. |
-| Zoom chat, SMS, anything plain | As chat, but assume all formatting is lost: no tables, links as bare URLs. |
+| Teams, Slack or Zoom chat | No subject. "Hi Name," at most, then the point. Short; bullets are fine; no headings. Zoom keeps the formatting from both Copy buttons. |
+| SMS, anything plain | As chat, but assume all formatting is lost: no tables, links as bare URLs. |
 
 For every channel:
 - Never put a secret in a message: passwords, API keys, client secrets, tokens, connection strings.
