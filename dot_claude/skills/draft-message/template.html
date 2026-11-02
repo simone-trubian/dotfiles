@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drafts</title>
+<style>
+:root {
+  --bg: #f5f5f2; --card: #ffffff; --text: #1d1d1b; --muted: #6b6b66; --border: #dcdcd6;
+  --accent: #2f5d8a; --accent-text: #ffffff; --ok: #2e7d4f; --ok-text: #ffffff; --fail: #b3261e;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1a1a19; --card: #252524; --text: #ececea; --muted: #a3a39d; --border: #3a3a38;
+    --accent: #7fa8d1; --accent-text: #10161c; --ok: #7cc59a; --ok-text: #0f1a13; --fail: #f2928a;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1a1a19; --card: #252524; --text: #ececea; --muted: #a3a39d; --border: #3a3a38;
+  --accent: #7fa8d1; --accent-text: #10161c; --ok: #7cc59a; --ok-text: #0f1a13; --fail: #f2928a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 "Segoe UI", system-ui, -apple-system, sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 28px 16px 56px; }
+h1 { font-size: 20px; margin: 0 0 4px; }
+.hint { color: var(--muted); font-size: 13px; margin: 0 0 24px; }
+article.msg { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin: 0 0 20px; }
+article.msg.superseded { opacity: .55; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+.meta b { color: var(--text); font-weight: 600; }
+.subject-row { display: flex; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 14px; }
+.subject-row .subject { flex: 1; font-weight: 600; overflow-wrap: anywhere; }
+.body { overflow-wrap: anywhere; }
+.body p { margin: 0 0 .8em; }
+.body ul, .body ol { margin: 0 0 .8em; padding-left: 1.4em; }
+.body a { color: var(--accent); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+button { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer; white-space: nowrap; }
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+button.done { background: var(--ok); border-color: var(--ok); color: var(--ok-text); }
+button.failed { border-color: var(--fail); color: var(--fail); background: var(--card); }
+</style>
+</head>
+<body>
+<main>
+<h1>Drafts</h1>
+<p class="hint">Copy keeps the formatting for Outlook and Teams. Copy as plain text is for Zoom and other plain boxes. Newest version first.</p>
+
+<!-- MESSAGES: newest first. Add each new message or version directly below this line. -->
+<article class="msg" data-channel="email">
+  <div class="meta"><b>To: Name</b><span>Email</span><span>v1 · YYYY-MM-DD HH:MM</span></div>
+  <div class="subject">Subject line</div>
+  <div class="body">
+    <p>Hi Name,</p>
+    <p>Message text.</p>
+    <p>Thanks,<br>Sender</p>
+  </div>
+</article>
+
+</main>
+<script>
+// Plain-text rendering of a message body: paragraphs separated by blank lines,
+// bullets as "- " or "1. ", links as "text (url)" when the text isn't the url.
+function toText(n, depth) {
+  if (n.nodeType === 3) return n.nodeValue.replace(/\s+/g, " ");
+  if (n.nodeType !== 1) return "";
+  const kids = () => Array.from(n.childNodes).map(c => toText(c, depth)).join("");
+  switch (n.tagName) {
+    case "BR": return "\n";
+    case "UL": case "OL": {
+      const pad = "  ".repeat(depth);
+      const items = Array.from(n.children).filter(li => li.tagName === "LI").map((li, i) => {
+        const mark = n.tagName === "OL" ? (i + 1) + ". " : "- ";
+        return pad + mark + Array.from(li.childNodes).map(c => toText(c, depth + 1)).join("").trim();
+      });
+      return "\n" + items.join("\n") + "\n\n";
+    }
+    case "A": {
+      const t = kids(), href = (n.getAttribute("href") || "").replace(/^mailto:/, "");
+      return !href || t.trim() === href ? t : t + " (" + href + ")";
+    }
+    case "P": case "DIV": case "BLOCKQUOTE": case "H1": case "H2": case "H3": case "H4":
+      return "\n" + kids().trim() + "\n\n";
+    default: return kids();
+  }
+}
+function toPlain(el) {
+  return toText(el, 0).split("\n")
+    .map(l => l.replace(/[ \t]+$/, "").replace(/^ (?=\S)/, ""))
+    .join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+// A copy event lets the page set both formats in one go, from a click, even on a file:// page.
+function copy(plain, html, btn) {
+  const onCopy = e => {
+    e.clipboardData.setData("text/plain", plain);
+    if (html) e.clipboardData.setData("text/html", html);
+    e.preventDefault();
+  };
+  document.addEventListener("copy", onCopy);
+  let ok = false;
+  try { ok = document.execCommand("copy"); } catch (_) { ok = false; }
+  document.removeEventListener("copy", onCopy);
+  if (ok) return flash(btn, true);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(plain).then(() => flash(btn, true), () => flash(btn, false));
+  } else flash(btn, false);
+}
+function flash(btn, ok) {
+  const label = btn.dataset.label;
+  btn.textContent = ok ? "Copied" : "Copy failed";
+  btn.classList.add(ok ? "done" : "failed");
+  setTimeout(() => { btn.textContent = label; btn.classList.remove("done", "failed"); }, 1500);
+}
+function button(label, cls, onClick) {
+  const b = document.createElement("button");
+  b.type = "button"; b.textContent = label; b.dataset.label = label;
+  if (cls) b.className = cls;
+  b.addEventListener("click", () => onClick(b));
+  return b;
+}
+
+document.querySelectorAll("article.msg").forEach(card => {
+  const body = card.querySelector(".body");
+  const subject = card.querySelector(".subject");
+  if (subject) {
+    const row = document.createElement("div");
+    row.className = "subject-row";
+    subject.replaceWith(row);
+    row.append(subject, button("Copy subject", "", b => copy(subject.textContent.trim(), null, b)));
+  }
+  if (!body) return;
+  const actions = document.createElement("div");
+  actions.className = "actions";
+  actions.append(
+    button("Copy", "primary", b => copy(toPlain(body), body.innerHTML.trim(), b)),
+    button("Copy as plain text", "", b => copy(toPlain(body), null, b))
+  );
+  card.append(actions);
+});
+</script>
+</body>
+</html>
