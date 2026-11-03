@@ -112,7 +112,7 @@ footer { color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--lin
     <div class="cols" id="sheet"></div>
     <p id="empty" hidden>Nothing matches. Try a shorter word, or press Esc to clear the filter.</p>
     <footer>
-      Checked against your config on 24 October 2026: wezterm.lua and <code>wezterm show-keys</code>, Fish 4.9.3 in vi mode, the installed LazyVim, and <code>:help novel</code>. Mac keys on Windows added on 30 October from <code>mac-keys.ahk</code>.
+      Checked against your config on 24 October 2026: wezterm.lua and <code>wezterm show-keys</code>, Fish 4.9.3 in vi mode, the installed LazyVim, and <code>:help novel</code>. Mac keys on Windows added on 30 October from <code>mac-keys.ahk</code>. Glow, <code>mdv</code> and LazyVim's Markdown extra added on 3 November.
       The source is <code>docs/cheatsheet.html</code> in your dotfiles; it is not copied into your home folder.
     </footer>
   </div>
@@ -293,6 +293,14 @@ const SECTIONS = [
       r("g Ctrl+G", "Words, lines and characters, down to the cursor"),
       r("j or k", "Move by screen line, so a long paragraph line is easy to walk"),
       r("Typing", "No completion popup and no auto-closed quotes or brackets in Markdown", O),
+      r("Saving", "No markdownlint warnings and no reformatting on save in Markdown", O),
+    ]},
+    { name: "Reading it rendered", rows: [
+      r("glow file.md", "The file rendered in the terminal. Reads best 110 columns wide or more; narrower, lines break raggedly.", C),
+      r("glow -t file.md", "Same, in a scrollable viewer; q to leave", C),
+      r("mdv file.md", "Open it as a page in the browser: offline, light or dark, front matter in a box at the top. Several files open several tabs.", OC),
+      r("Space u m", "Rendered Markdown in the buffer on / off; on by default"),
+      r("Space c p", "Live preview in the browser, updating as you type; draws Mermaid diagrams"),
     ]},
   ]},
 
