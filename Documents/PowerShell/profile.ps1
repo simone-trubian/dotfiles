@@ -42,6 +42,22 @@ function lt { eza @args -la --sort=modified --header --icons --git --hyperlink }
 function ldir { eza @args -lD --header --icons --git --hyperlink }                 # folders only
 function tree2 { eza @args --tree --level=2 --git-ignore --git --hyperlink --icons }
 
+# Render Markdown files as pages in the browser, offline (Pandoc): mdv README.md
+function mdv {
+    foreach ($path in $args) {
+        $src = (Resolve-Path -LiteralPath $path -ErrorAction Stop).Path
+        $out = Join-Path ([IO.Path]::GetTempPath()) "mdv\$([IO.Path]::GetFileNameWithoutExtension($src)).html"
+        New-Item -ItemType Directory -Force (Split-Path $out) | Out-Null
+        $common = @("--to=html5", "--standalone", "--embed-resources",
+            "--css=$HOME/.config/pandoc/mdv.css", "--lua-filter=$HOME/.config/pandoc/mdv.lua",
+            "--resource-path=$(Split-Path $src)", "--output=$out", $src)
+        # Front matter that isn't valid YAML fails the first run; render it as text instead
+        pandoc --from=gfm+yaml_metadata_block @common 2>$null
+        if ($LASTEXITCODE -ne 0) { pandoc --from=gfm-yaml_metadata_block @common }
+        if ($LASTEXITCODE -eq 0) { Invoke-Item $out }
+    }
+}
+
 # Set zoxide smarter cd (z, zi)
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {
     Invoke-Expression (& { (zoxide init powershell | Out-String) })

@@ -1,0 +1,71 @@
+/* Page style for mdv: Markdown rendered by Pandoc, opened in the browser. */
+
+:root {
+  --bg: #ffffff; --text: #1f2328; --muted: #59636e; --border: #d1d9e0; --subtle: #f6f8fa;
+  --link: #0969da; --mark: #fff8c5;
+  --kw: #cf222e; --str: #0a3069; --num: #0550ae; --com: #59636e; --fn: #8250df; --typ: #953800;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117; --text: #e6edf3; --muted: #9198a1; --border: #3d444d; --subtle: #151b23;
+    --link: #4493f8; --mark: #3b2e00;
+    --kw: #ff7b72; --str: #a5d6ff; --num: #79c0ff; --com: #9198a1; --fn: #d2a8ff; --typ: #ffa657;
+  }
+}
+
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body {
+  max-width: 900px; margin: 0 auto; padding: 32px 24px 64px;
+  background: var(--bg); color: var(--text);
+  font: 16px/1.6 -apple-system, "Segoe UI", system-ui, sans-serif;
+  overflow-wrap: break-word;
+}
+@media (max-width: 600px) { body { padding: 20px 16px 48px; } }
+
+h1, h2, h3, h4, h5, h6 { margin: 1.5em 0 .6em; line-height: 1.25; font-weight: 600; }
+h1 { font-size: 2em; padding-bottom: .3em; border-bottom: 1px solid var(--border); }
+h2 { font-size: 1.5em; padding-bottom: .3em; border-bottom: 1px solid var(--border); }
+h3 { font-size: 1.25em; }
+body > :first-child { margin-top: 0; }
+p, ul, ol, dl, table, pre, blockquote { margin: 0 0 1em; }
+li + li { margin-top: .25em; }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 1.5em 0; }
+mark { background: var(--mark); color: inherit; }
+img { max-width: 100%; }
+
+blockquote { margin-left: 0; padding: 0 1em; color: var(--muted); border-left: .25em solid var(--border); }
+
+code, pre { font-family: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace; font-size: 85%; }
+:not(pre) > code { padding: .2em .4em; border-radius: 6px; background: var(--subtle); }
+pre { padding: 16px; overflow-x: auto; line-height: 1.45; border-radius: 6px; background: var(--subtle); }
+pre code { font-size: 100%; }
+div.sourceCode { margin: 0 0 1em; }
+
+table { display: block; width: max-content; max-width: 100%; overflow-x: auto; border-collapse: collapse; }
+th, td { padding: 6px 13px; border: 1px solid var(--border); vertical-align: top; }
+th { font-weight: 600; background: var(--subtle); }
+tr:nth-child(2n) td { background: var(--subtle); }
+
+ul.task-list, ul:has(> li > input[type="checkbox"]) { list-style: none; padding-left: 1.2em; }
+input[type="checkbox"] { margin: 0 .4em 0 -1.2em; vertical-align: middle; }
+
+/* Front matter, shown by mdv.lua as a box above the document */
+dl.front-matter {
+  display: grid; grid-template-columns: max-content 1fr; gap: 2px 16px;
+  padding: 10px 14px; font-size: 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--subtle);
+}
+dl.front-matter dt { color: var(--muted); }
+dl.front-matter dd { margin: 0; }
+
+/* Pandoc's syntax highlighting classes, recoloured for both themes */
+code span.kw, code span.cf, code span.im { color: var(--kw); }
+code span.st, code span.ss, code span.ch, code span.vs { color: var(--str); }
+code span.dv, code span.bn, code span.fl, code span.cn, code span.sc { color: var(--num); }
+code span.co, code span.cv, code span.do, code span.an, code span.in { color: var(--com); font-style: italic; }
+code span.fu, code span.at { color: var(--fn); }
+code span.dt, code span.va, code span.bu, code span.ex { color: var(--typ); }
+code span.op, code span.ot { color: inherit; }
+code span.al, code span.er { color: var(--kw); font-weight: 600; }
