@@ -19,6 +19,12 @@
 {{- $s = setValueAtPath "cleanupPeriodDays" 30 $s -}}
 {{- $s = setValueAtPath "autoDreamEnabled" false $s -}}
 
+{{- /* No automatic compaction: chats are disposable and are restarted before
+       they fill up, so keep their full context. Idle compaction is a separate
+       switch. /compact still works by hand. */ -}}
+{{- $s = setValueAtPath "autoCompactEnabled" false $s -}}
+{{- $s = setValueAtPath "idleCompaction" false $s -}}
+
 {{- /* Status line */ -}}
 {{- $s = setValueAtPath "statusLine" (dict "type" "command" "command" "node ~/.claude/statusline.js") $s -}}
 
