@@ -1,6 +1,7 @@
 -- Pre-merge checks. Errors (E) block a merge; warnings (W) do not.
 local novel = require("novel")
 local ts = require("novel.typeset")
+local style = require("novel.style")
 local M = {}
 
 local SPEECH = {
@@ -135,8 +136,11 @@ local function spell_bad(root)
       vim.api.nvim_buf_call(spellbuf, function()
         vim.wo.spell = true
         for _, r in ipairs(vim.spell.check(ascii)) do
+          -- "local": right in another region's English (color, theater)
           if r[2] == "bad" then
-            bad = true
+            bad = "bad"
+          elseif r[2] == "local" and not bad then
+            bad = "local"
           end
         end
       end)
@@ -161,6 +165,7 @@ function M.lines(lines, root, opts)
     nameset[n] = true
   end
   local near = {}
+  local rules = style.load(root)
 
   -- headings
   local heads = M.headings(lines)
@@ -303,6 +308,19 @@ function M.lines(lines, root, opts)
       end
     end
 
+    -- house-style rules (tools/style-rules.txt) and dashes
+    for _, hit in ipairs(style.check_chars(c, rules)) do
+      add(i, byte[hit.k], "W", ("House style: %s → %s"):format(table.concat(c, "", hit.k, hit.e), hit.rule.right))
+    end
+    s = l:find(" — ", 1, true)
+    if s then
+      add(i, s, "W", "Spaced em dash: an aside takes a spaced en dash ( – ), cut-off speech a closed em dash (—)")
+    end
+    s = l:find("%a–%a")
+    if s then
+      add(i, s, "W", "Unspaced en dash: an aside takes a spaced en dash ( – )")
+    end
+
     -- word-level checks: -ize spelling, spelling, name near-misses
     local k = 1
     while k <= #c do
@@ -324,6 +342,8 @@ function M.lines(lines, root, opts)
           end
           if ize and not word:match("^%u") then
             add(i, st, "W", ("-ize spelling: house style is -ise (%s)"):format(word))
+          elseif not word:find("-", 1, true) and is_bad(word) == "local" then
+            add(i, st, "W", ("Not British spelling: %s"):format(word))
           elseif not word:find("-", 1, true) and is_bad(word) then
             local hint = ""
             if word:match("^%u") and #ts.chars(word) >= 4 and not nameset[word] then

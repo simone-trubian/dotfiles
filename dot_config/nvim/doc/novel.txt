@@ -173,7 +173,9 @@ Errors (E) block |:NovelMerge|:
 
 Warnings (W) are listed but do not block a merge:
 
-  - spelling, see |novel-spelling|
+  - spelling, see |novel-spelling|; an American spelling the en_gb list
+    knows (color, theater) is reported as "Not British spelling"
+  - house style, see |novel-style-rules|
   - -ize spelling (house style is -ise); size, prize, seize etc. are fine
   - a capitalised word that looks like a misspelt name: "did you mean …?"
   - dialogue tags: a capital after the quote (‘…?’ Asked), a full stop
@@ -184,10 +186,22 @@ Warnings (W) are listed but do not block a merge:
   - a quote left open when the next paragraph opens with ‘: fine only
     when the same speaker carries on
   - double quotes used outside dialogue, double spaces, a hyphen used as
-    a dash
+    a dash, a spaced em dash ( — ), an unspaced en dash (grey–blue)
 
 A dialogue-tag warning can be a false alarm, e.g. a quoted phrase in
 narration followed by "said".
+
+                                                         *novel-style-rules*
+House-style rules live with the novel in `tools/style-rules.txt`, one per
+line: >
+	Defense => Defence
+	comrade {Name} => Comrade + name or title
+<
+Matching is case-sensitive and on whole words; {Name} stands for any
+capitalised word; # starts a comment. Each match is a warning such as
+"House style: Defense → Defence". Add a rule whenever a spelling or style
+decision is made. `tools/novelcheck.py` runs the same checks, without the
+spell check, from a terminal.
 
 ==============================================================================
 7. Spelling and names                                         *novel-spelling*
@@ -232,6 +246,7 @@ Docs.
   ~/.config/nvim/lua/novel/init.lua       setup, folder detection, commands
   ~/.config/nvim/lua/novel/typeset.lua    |:Typeset| and the typing keys
   ~/.config/nvim/lua/novel/check.lua      |:NovelCheck|
+  ~/.config/nvim/lua/novel/style.lua      house-style rules for |:NovelCheck|
   ~/.config/nvim/lua/novel/merge.lua      |:NovelMerge|, |:NovelCommit|,
                                           |:NovelBuild|
 
