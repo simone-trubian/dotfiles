@@ -162,12 +162,16 @@ const SECTIONS = [
       r("Leader h/j/k/l", "Move to the pane left, below, above, right", O),
       r("Leader z", "Zoom the pane to the full window, again to restore", O),
       r("Leader x", "Close the pane (asks first)", O),
+      r("Leader m", "Swap the pane with another: letters appear on the panes, press one", O),
+      r("Leader r", "Rotate the panes clockwise, like `Ctrl-w r`; with two panes this swaps them", O),
+      r("Leader t", "Move the pane to a new tab, like `Ctrl-w T`", O),
     ]},
     { name: "Pane mode (ours)", rows: [
       r("Leader p", "Enter pane mode: keys repeat without the leader. The status bar shows PANE.", O),
       r("h/j/k/l", "Move between panes", O),
       r("H/J/K/L", "Resize the pane by 5 cells", O),
       r("v/s/x/z", "Split, close, zoom, as with the leader", O),
+      r("m/r/t", "Swap, rotate, move to a new tab, as with the leader", O),
       r("Esc or q or Enter", "Leave pane mode (any other key also leaves)", O),
     ]},
     { name: "Tabs and windows", rows: [

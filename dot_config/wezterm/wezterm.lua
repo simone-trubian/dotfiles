@@ -97,6 +97,14 @@ local pane_keys = {
 	{ key = "l", action = act.ActivatePaneDirection("Right") },
 	{ key = "x", action = act.CloseCurrentPane({ confirm = true }) },
 	{ key = "z", action = act.TogglePaneZoomState },
+	{ key = "m", action = act.PaneSelect({ mode = "SwapWithActive" }) }, -- letters appear on panes; pick one to swap places with it
+	{ key = "r", action = act.RotatePanes("Clockwise") }, -- like Vim's Ctrl-w r
+	{
+		key = "t",
+		action = wezterm.action_callback(function(_, pane)
+			pane:move_to_new_tab() -- like Vim's Ctrl-w T
+		end),
+	},
 }
 
 config.keys = {}
